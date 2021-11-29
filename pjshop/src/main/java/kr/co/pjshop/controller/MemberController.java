@@ -1,21 +1,26 @@
 package kr.co.pjshop.controller;
 
 
+import kr.co.pjshop.dto.MemberDto;
 import kr.co.pjshop.dto.MemberFormDto;
+import kr.co.pjshop.dto.MemberPageDto;
+import kr.co.pjshop.dto.ProfileDto;
 import kr.co.pjshop.entity.Member;
+import kr.co.pjshop.entity.SearchMember;
 import kr.co.pjshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 @RequestMapping("/members")
 @Controller
@@ -60,4 +65,60 @@ public class MemberController {
         return "/member/memberLoginForm";
     }
 
+    @GetMapping("/admin/userList")
+    public String pageList(Model model, @PageableDefault(size = 4) Pageable pageable, SearchMember searchMember) {
+        MemberPageDto memberPageDto = new MemberPageDto();
+
+        if (searchMember.getSearchKeyword() == null) {
+            memberPageDto = memberService.findAllMemberByPaging(pageable);
+        } else {
+            memberPageDto = memberService.findAllMemberByConditionByPaging(searchMember, pageable);
+        }
+
+        int homeStartPage = memberPageDto.getHomeStartPage();
+        int homeEndPage = memberPageDto.getHomeEndPage();
+        Page<MemberDto> memberBoards = memberPageDto.getMemberBoards();
+
+        model.addAttribute("startPage", homeStartPage);
+        model.addAttribute("endPage", homeEndPage);
+        model.addAttribute("memberList", memberBoards);
+        model.addAttribute("searchCondition", searchMember.getSearchCondition());
+        model.addAttribute("searchKeyword", searchMember.getSearchKeyword());
+
+        return "member/memberList";
+    }
+    @GetMapping("/admin/userList/user/{id}")
+    public String pageUser(@PathVariable Long id, Model model) {
+        model.addAttribute("Member", memberService.findMemberById(id));
+
+        return "member/memberpage";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/admin/userList/{id}")
+    public String deleteMember(@PathVariable Long id) {
+        memberService.deleteById(id);
+
+        return "회원 삭제 완료";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/admin/userList")
+    public String deleteChecked(@RequestParam(value = "idList", required = false) List<Long> idList) {
+        int size = idList.size();
+
+        for (int i = 0; i < size; i++) {
+            memberService.deleteById(idList.get(i));
+        }
+        return "선택된 회원 삭제 완료";
+    }
+
+    @PutMapping("/update")
+    public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
+
+        memberService.updateProfile(principal.getName(), profileDto);
+
+        return "redirect:/main/mypage";
+
+    }
 }

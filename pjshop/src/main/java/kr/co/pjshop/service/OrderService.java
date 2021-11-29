@@ -10,20 +10,16 @@ import kr.co.pjshop.repository.ItemRepository;
 import kr.co.pjshop.repository.MemberRepository;
 import kr.co.pjshop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
-
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-
-import org.thymeleaf.util.StringUtils;
 
 @Service
 @Transactional
@@ -68,7 +64,7 @@ public class OrderService {
             for (OrderItem orderItem : orderItems) {
                 ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn
                         (orderItem.getItem().getId(), "Y");
-              OrderItemDto orderItemDto =
+                OrderItemDto orderItemDto =
                         new OrderItemDto(orderItem, itemImg.getImgUrl());
                 orderHistDto.addOrderItemDto(orderItemDto);
             }

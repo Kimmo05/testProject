@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainlayout}">
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -34,57 +35,1655 @@
 
 <div layout:fragment="content">
 
-    <div id="carouselControls" class="carousel slide margin" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active item">
-                <img class="d-block w-100 banner" src="https://user-images.githubusercontent.com/13268420/112147492-1ab76200-8c20-11eb-8649-3d2f282c3c02.png" alt="First slide">
+    <div class="slider-area section-padding-8">
+        <div class="container-fluid">
+            <div class="slider-active-4 nav-style-1 dot-style-4">
+                <div class="single-slider">
+                    <div class="row no-gutters align-items-center flex-row-reverse">
+                        <div class="col-lg-8 col-md-8 col-12 col-sm-12">
+                            <div class="slider-single-img-6">
+                                <img src="/assets/images/slider/furniture-slider-1.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-12">
+                            <div class="slider-content-7 slider-animated-1">
+                                <h2 class="animated">Anniversary</h2>
+                                <h1 class="animated">Sale 50%</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="furniture-slider-shape-1">
+                        <img src="/assets/images/slider/furniture-slider-shape-1.png" alt="">
+                    </div>
+                </div>
+                <div class="single-slider">
+                    <div class="row no-gutters align-items-center flex-row-reverse">
+                        <div class="col-lg-8 col-md-8 col-12 col-sm-12">
+                            <div class="slider-single-img-6">
+                                <img src="/assets/images/slider/furniture-slider-2.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-12">
+                            <div class="slider-content-7 slider-animated-1">
+                                <h2 class="animated">Anniversary</h2>
+                                <h1 class="animated">Sale 50%</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="furniture-slider-shape-2">
+                        <img src="/assets/images/slider/furniture-slider-shape-2.png" alt="">
+                    </div>
+                </div>
+                <div class="single-slider">
+                    <div class="row no-gutters align-items-center flex-row-reverse">
+                        <div class="col-lg-8 col-md-8 col-12 col-sm-12">
+                            <div class="slider-single-img-6">
+                                <img src="/assets/images/slider/furniture-slider-3.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12 col-sm-12">
+                            <div class="slider-content-7 slider-animated-1">
+                                <h2 class="animated">Anniversary</h2>
+                                <h1 class="animated">Sale 50%</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="furniture-slider-shape-3"></div>
+                    <div class="furniture-slider-shape-4"></div>
+                </div>
             </div>
         </div>
     </div>
-
-    <input type="hidden" name="searchQuery" th:value="${itemSearchDto.searchQuery}">
-    <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
-        <p class="h3 font-weight-bold" th:text="${itemSearchDto.searchQuery} + '검색 결과'"></p>
-    </div>
-
-    <div class="row">
-        <th:block th:each="item, status: ${items.getContent()}">
-            <div class="col-md-4 margin">
-                <div class="card">
-                    <a th:href="'/item/' +${item.id}" class="text-dark">
-                        <!--/*@thymesVar id="imgUrl" type=""*/-->
-                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
-                        <div class="card-body">
-                            <h4 class="card-title">[[${item.itemNm}]]</h4>
-                            <p class="card-text">[[${item.itemDetail}]]</p>
-                            <h3 class="card-title text-danger">[[${item.price}]]원</h3>
+    <div class="categorie-area pt-155">
+        <div class="container">
+            <div class="section-title-6 mb-65 text-center">
+                <h2>Shop By Categories</h2>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="/assets/images/icon-img/furniture-book.svg" alt=""></a>
                         </div>
-                    </a>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">Book Self</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-dress.svg" alt=""></a>
+                        </div>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">Dress</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-headphone.svg" alt=""></a>
+                        </div>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">headphone</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair.svg" alt=""></a>
+                        </div>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">Chair</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair-2.svg" alt=""></a>
+                        </div>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">Chair</a></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                    <div class="single-categories-5 text-center">
+                        <div class="single-categories-5-img">
+                            <a href="shop.html"><img class="inject-me" src="assets/images/icon-img/furniture-chair-2.svg" alt=""></a>
+                        </div>
+                        <div class="categorie-content-6">
+                            <h4><a href="#">Chair</a></h4>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </th:block>
+        </div>
     </div>
-
-    <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-        <ul class="pagination justify-content-center">
-
-            <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
-                <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true'>Previous</span>
-                </a>
-            </li>
-
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
-            </li>
-
-            <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>Next</span>
-                </a>
-            </li>
-
-        </ul>
+    <div class="service-area pt-160 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="service-wrap text-center mb-30">
+                        <img class="inject-me" src="assets/images/icon-img/happiness.svg" alt="">
+                        <h3>Happiness </h3>
+                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="service-wrap text-center mb-30">
+                        <img class="inject-me" src="assets/images/icon-img/shipping-car.svg" alt="">
+                        <h3>Free Shipping </h3>
+                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="service-wrap text-center mb-30">
+                        <img class="inject-me" src="assets/images/icon-img/trusty.svg" alt="">
+                        <h3>All Trusty Brand </h3>
+                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="service-wrap text-center mb-30">
+                        <img class="inject-me" src="assets/images/icon-img/support-expart.svg" alt="">
+                        <h3>24/7 Support Expert </h3>
+                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="banner-area padding-10-row-col">
+        <div class="container">
+            <div class="row grid">
+                <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
+                    <div class="banner-wrap mb-10 mt-55">
+                        <div class="banner-img banner-img-overflow">
+                            <a href="product-details.html"><img src="assets/images/banner/banner-36.png" alt=""></a>
+                        </div>
+                        <div class="banner-content-15">
+                            <h2>Best Sale</h2>
+                            <h3>35% off</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
+                    <div class="banner-wrap mb-10">
+                        <div class="banner-img banner-img-overflow">
+                            <a href="product-details.html"><img src="assets/images/banner/banner-37.png" alt=""></a>
+                        </div>
+                        <div class="banner-content-15">
+                            <h2>Dining Set </h2>
+                            <h3>For Future</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
+                    <div class="banner-wrap mb-10">
+                        <div class="banner-img banner-img-overflow">
+                            <a href="product-details.html"><img src="assets/images/banner/banner-39.png" alt=""></a>
+                        </div>
+                        <div class="banner-content-15">
+                            <h2>Comfort Sofa</h2>
+                            <h3>Eco Friendly</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
+                    <div class="banner-wrap mb-10">
+                        <div class="banner-img banner-img-overflow">
+                            <a href="product-details.html"><img src="assets/images/banner/banner-38.png" alt=""></a>
+                        </div>
+                        <div class="banner-content-15">
+                            <h2>Trending </h2>
+                            <h3>Meeting Set</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-area pt-145 pb-100">
+        <div class="container">
+            <div class="section-categories-wrap mb-85">
+                <div class="section-title section-title-width-1">
+                    <h2 class="bold">Deal Of The Month</h2>
+                    <p>Proactively drive collaborative value and reliable mindshare. Distinctively negotiate superior users via economically sound models. Energistically underwhelm.</p>
+                </div>
+                <div class="categories-btn section-btn-width-1 btn-style-1 btn-hover furniture-categories-btn">
+                    <a class="animated btn-ptb-2" href="#">Browse All Deals </a>
+                </div>
+            </div>
+            <div class="product-tab-list-1 tab-list-1-left nav mb-65">
+                <a class="active" href="#product-1" data-toggle="tab">
+                    All
+                </a>
+                <a href="#product-2" data-toggle="tab">
+                    Gadget
+                </a>
+                <a href="#product-3" data-toggle="tab">
+                    Fashion
+                </a>
+                <a href="#product-4" data-toggle="tab">
+                    Furniture
+                </a>
+                <a href="#product-5" data-toggle="tab">
+                    Books
+                </a>
+                <a href="#product-6" data-toggle="tab">
+                    Sports
+                </a>
+            </div>
+            <div class="tab-content jump">
+                <div id="product-1" class="tab-pane active">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center" >
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-3 col-md-6 col-sm-6" th:each="item, status: ${items.getContent()}">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a th:href="'/item/' +${item.id}">
+                                        <img  th:src="${item.imgUrl}"  alt="" th:alt="${item.itemNm}">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
+                                    <div class="product-price">
+                                        <span>[[${item.itemDetail}]]</span>
+                                        <span class="old-price">[[${item.price}]]원</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart" onclick="addCart()">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-2" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-99.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-100.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-101.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-3" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-99.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-100.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-101.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-4" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-99.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-100.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-101.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-5" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-99.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-100.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-101.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-6" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 col-sm-12">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-95.jpg" alt="">
+                                    </a>
+                                    <div class="timer-2 timer-style-1 product-timer timer-style-1-center furniture-timer">
+                                        <div data-countdown="2022/01/01"></div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-99.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-100.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product-wrap mb-45">
+                                <div class="product-img product-img-zoom mb-25">
+                                    <a href="product-details.html">
+                                        <img src="assets/images/product/product-101.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a href="product-details.html">Product Title</a></h4>
+                                    <div class="product-price">
+                                        <span>$ 124</span>
+                                        <span class="old-price">$ 130</span>
+                                    </div>
+                                </div>
+                                <div class="product-action-position-1 text-center">
+                                    <div class="product-content">
+                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <div class="product-price">
+                                            <span>$ 124</span>
+                                            <span class="old-price">$ 130</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-action-wrap">
+                                        <div class="product-action-cart">
+                                            <button title="Add to Cart">Add to cart</button>
+                                        </div>
+                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="about-area pt-130 pb-130 bg-img" style="background-image:url(/assets/images/bg/bg-8.jpg);">
+        <div class="container">
+            <div class="furniture-about-content">
+                <h3>Welcome to Luxury Furniture Industry</h3>
+                <p>Conveniently repurpose web-enabled supply chains after technically sound action items. Progressively implement granular e-markets whereas customized niches. Assertively envisioneer sticky intellectual capital for user-centric leadership skills.</p>
+                <div class="btn-style-3 btn-hover">
+                    <a class="btn3-ptb-7 btn3-bg-white btn3-text-blue" href="about-us.html">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="instagram-area pt-160 pb-125">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 d-block d-sm-none">
+                    <div class="section-title mt-55 mb-30 text-center">
+                        <h2 class="bold">Follow Us On Instagram</h2>
+                        <span>@hashop</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-17.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 d-none d-sm-block">
+                    <div class="section-title mt-55 mb-30 text-center">
+                        <h2 class="bold">Follow Us On Instagram</h2>
+                        <span>@hashop</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-18.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-19.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-20.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-21.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-22.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-23.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-24.jpg" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-instafeed mb-30">
+                        <a href="#"><img src="assets/images/instafeed/instafeed-25.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blog-area pb-125">
+        <div class="container">
+            <div class="section-title st-peragraph-width st-peragraph-auto text-center mb-65">
+                <h2 class="bold">Pres Release </h2>
+                <p>Proactively drive collaborative value and reliable mindshare. Distinctively negotiate superior users via economically sound models. Energistically underwhelm.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog-wrap mb-30">
+                        <div class="blog-img mb-35">
+                            <a href="blog-details.html"><img src="assets/images/blog/blog-1.jpg" alt=""></a>
+                        </div>
+                        <div class="blog-content">
+                            <h3><a href="blog-details.html">Designers matched perfectly to you on Envato Studio </a></h3>
+                            <span>on April 24, 2019</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog-wrap mb-30">
+                        <div class="blog-img mb-35">
+                            <a href="blog-details.html"><img src="assets/images/blog/blog-2.jpg" alt=""></a>
+                        </div>
+                        <div class="blog-content">
+                            <h3><a href="blog-details.html">Designers matched perfectly to you on Envato Studio</a></h3>
+                            <span>on April 24, 2019</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog-wrap mb-30">
+                        <div class="blog-img mb-35">
+                            <a href="blog-details.html"><img src="assets/images/blog/blog-3.jpg" alt=""></a>
+                        </div>
+                        <div class="blog-content">
+                            <h3><a href="blog-details.html">Designers matched perfectly to you on Envato Studio </a></h3>
+                            <span>on April 24, 2019</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <h1>OKEA</h1>
+        <p class="lead">회원 기능</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>
+            <a class="btn btn-lg btn-secondary" href="/members/login">로그인</a>
+            <a class="btn btn-lg btn-secondary" href="/admin/main" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">관리자모드</a>
+        </p>
+        <p class="lead">마이페이지, 상품 목록</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/mypage">마이페이지</a>
+            <a class="btn btn-lg btn-dark" href="/itemMain">상품 목록</a>
+        </p>
+        <p class="lead">주문 기능</p>
+        <p>
+            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a>
+        <p class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/cart">장바구니</a>
+        </p>
+        </p>
+    </div>
 </div>
+</div>
+</html>

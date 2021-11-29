@@ -16,14 +16,11 @@ import kr.co.pjshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityNotFoundException;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.thymeleaf.util.StringUtils;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -107,8 +104,8 @@ public class CartService {
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository
-                            .findById(cartOrderDto.getCartItemId())
-                            .orElseThrow(EntityNotFoundException::new);
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
 
             OrderDto orderDto = new OrderDto();
             orderDto.setItemId(cartItem.getItem().getId());
@@ -119,8 +116,8 @@ public class CartService {
         Long orderId = orderService.orders(orderDtoList, email);
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository
-                            .findById(cartOrderDto.getCartItemId())
-                            .orElseThrow(EntityNotFoundException::new);
+                    .findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
             cartItemRepository.delete(cartItem);
         }
 

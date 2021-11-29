@@ -19,7 +19,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
+public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
 

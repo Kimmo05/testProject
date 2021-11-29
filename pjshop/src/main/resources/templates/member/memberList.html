@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_default}">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<th:block layout:fragment="scriptt">
+    <script th:inline="javascript">
+        function openUserDetail(id){ //유저 상세정보 페이지 open (컨트롤러 만들어야함)
+            location.href='/members/admin/userList/user/' + id;
+        }
+
+        function deleteUser(id){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            if(confirm("해당 회원의 주문정보가 함께 삭제될 수 있습니다. 정말로 삭제하시겠습니까?")){
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/members/admin/userList/' + id,
+                    beforeSend : function(xhr)
+                    {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader(header, token);
+                    }
+                }).done(function(word){
+                    alert(word);
+                    location.reload();
+                }).fail(function (error){
+                    alert(JSON.stringify(error));
+                })
+            }else{
+                return false;
+            }
+
+        }
+
+        function deleteCheckedUsers(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            let list = [];
+            $('.checkbox-select').each(function(){
+                if($(this).is(':checked')){
+                    let val1 = $(this).closest('tr').find('input[type=hidden]').val();
+                    list.push(val1)
+                }
+            })
+            if(confirm("해당 회원의 주문정보가 함께 삭제될 수 있습니다. 정말로 삭제하시겠습니까?")){
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/members/admin/userList',
+                    data: {idList : list},
+                    beforeSend : function(xhr)
+                    {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader(header, token);
+                    },
+                    traditional: true
+                }).done(function(word){
+                    alert(word);
+                    location.reload();
+                }).fail(function (error){
+                    alert(JSON.stringify(error));
+                })
+            }else{
+                return false;
+            }
+        }
+
+        function checkall(){
+            $('.checkbox-select').prop('checked', true);
+        }
+
+        $(function(){
+            $('.checkbox-selectall').click(function(){
+                if($(this).is(':checked')){
+                    $('.checkbox-select').prop('checked', true);
+                }else{
+                    $('.checkbox-select').prop('checked', false);
+                }
+            })
+        })
+
+    </script>
+</th:block>
+<th:block layout:fragment="content">
+        <div class="container">
+    <div class="card shadow mb-4">
+
+        <div class="card-header">
+            <form class= "search-form" id="search-form" method="GET" th:action="@{/admin/userList}">
+                <select name="searchCondition" class="search-mode search-item" form="search-form">
+                    <option value="userid">아이디</option>
+                    <option value="username">이름</option>
+                    <!--            <option value="phone">휴대전화</option>-->
+                    <!--            <option value="visit">방문횟수</option>-->
+                    <!--            <option value="order">주문횟수</option>-->
+                </select>
+                <input type="text" name="searchKeyword" class="search-input search-item">
+                <input type="submit" class="search-submit search-item" value="검색">
+            </form>
+        총 <b class="num-searched"><span th:text="${memberList.totalElements}"></span></b> 명의 회원이 검색되었습니다
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>이름</th>
+                                    <th>email</th>
+                                    <th>주소</th>
+                                    <th>생성날짜</th>
+                                     <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="user : ${memberList}">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.name}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text ="${user.address}"></td>
+                                    <td th:text="${#temporals.format(user.regTime, 'yyyy-MM-dd')}"></td>
+                                    <td>
+                                        <input type="button" value="보기" class="btn btn-primary" th:onclick="|openUserDetail('${user.id}')|">
+                                    </td>
+                                    <td>
+                                        <input type="button" value="삭제" class="btn btn-danger" th:onclick="|deleteUser('${user.id}')|">
+
+                                    </td>
+                                    <input type="hidden" th:value="${user.id}">
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="paginate">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${1 == memberList.pageable.pageNumber + 1} ? 'disabled'">
+                                        <a class="page-link" href="#" th:href="@{/admin/userList(page=${memberList.pageable.pageNumber - 1},searchCondition=${searchCondition},searchKeyword=${searchKeyword})}" tabindex="-1" aria-disabled="true">Previous</a>
+                                    </li>
+
+                                    <li class="page-item" th:classappend="${i == memberList.pageable.pageNumber + 1} ? 'disabled'" th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                                        <a class="page-link" href="#" th:href="@{/admin/userList(page=${i - 1},searchCondition=${searchCondition},searchKeyword=${searchKeyword})}" th:text="${i}">1</a></li>
+
+                                    <li class="page-item" th:classappend="${memberList.totalPages == memberList.pageable.pageNumber + 1} ? 'disabled'">
+                                        <a class="page-link" href="#" th:href="@{/admin/userList(page=${memberList.pageable.pageNumber + 1},searchCondition=${searchCondition},searchKeyword=${searchKeyword})}">Next</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+</th:block>
+</html>

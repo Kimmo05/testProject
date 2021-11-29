@@ -1,6 +1,5 @@
 package kr.co.pjshop.dto;
 
-
 import kr.co.pjshop.entity.ItemImg;
 import lombok.Getter;
 import lombok.Setter;

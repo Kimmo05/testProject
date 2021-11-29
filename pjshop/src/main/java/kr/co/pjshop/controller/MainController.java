@@ -1,7 +1,9 @@
 package kr.co.pjshop.controller;
+
 import kr.co.pjshop.dto.ItemSearchDto;
 import kr.co.pjshop.dto.MainItemDto;
 import kr.co.pjshop.service.ItemService;
+import kr.co.pjshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +19,15 @@ import java.util.Optional;
 public class MainController {
 
     private final ItemService itemService;
+    private final MemberService memberService;
+    @GetMapping(value = "/admin/main")
+    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+
+        return "admin_main";
+    }
 
     @GetMapping(value = "/")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+    public String mainPage(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
@@ -31,4 +39,17 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping(value = "/itemMain")
+    public String itemmain(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "item/itemMain";
+
+    }
 }

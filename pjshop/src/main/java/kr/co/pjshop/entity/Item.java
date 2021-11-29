@@ -1,5 +1,6 @@
 package kr.co.pjshop.entity;
 
+
 import kr.co.pjshop.constant.ItemSellStatus;
 import kr.co.pjshop.dto.ItemFormDto;
 import kr.co.pjshop.exception.OutOfStockException;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-
 
 @Entity
 @Table(name="item")

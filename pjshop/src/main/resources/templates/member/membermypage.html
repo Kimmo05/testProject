@@ -29,6 +29,24 @@
 
 <div layout:fragment="content">
 
+    <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <h2>My Account</h2>
+                <ul>
+                    <li>
+                        <a href="index.html">Home </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li>
+                        <a href="index.html">Product </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li class="active"> My Account </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <!-- my account wrapper start -->
     <div class="my-account-wrapper bg-gray pt-160 pb-160">
         <div class="container">
@@ -59,8 +77,8 @@
                                         <div class="myaccount-content">
                                             <h3>Dashboard</h3>
                                             <div class="welcome">
-                                                <div>저희 쇼핑몰을 이용해 주셔서 감사합니다. <b th:text="${member.name}">홍길동</b> 님은 <b sec:authorize="hasRole('ROLE_ADMIN')">[관리자]</b><b sec:authorize="hasRole('ROLE_MEMBER')">[일반회원]</b> 이십니다</div>
                                                 <p>Hello, <strong>Alex Tuntuni</strong> (If Not <strong>Tuntuni !</strong><a href="login-register.html" class="logout"> Logout</a>)</p>
+                                                <div>저희 쇼핑몰을 이용해 주셔서 감사합니다. <b th:text="${member.name}">홍길동</b> 님은 <b sec:authorize="hasRole('ROLE_ADMIN')">[관리자]</b><b sec:authorize="hasRole('ROLE_MEMBER')">[일반회원]</b> 이십니다</div>
                                             </div>
 
                                             <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
@@ -229,7 +247,5 @@
             </div>
         </div>
     </div>
-    <!-- my account wrapper end -->
-
 </div>
 </html>

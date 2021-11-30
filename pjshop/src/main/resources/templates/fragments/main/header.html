@@ -39,7 +39,7 @@
                                                     <ul class="mega-menu-style-1 mega-menu-width1 menu-negative-mrg1">
                                                         <li class="mega-menu-sub-width33"><a class="menu-title" href="#">USER</a>
                                                             <ul>
-                                                                <li>  <a href="/main/mypage" sec:authorize="isAuthenticated()"><i class="icofont-user-alt-3" ></i>마이페이지</a></li>
+                                                                <li>  <a href="/members/mypage" sec:authorize="isAuthenticated()"><i class="icofont-user-alt-3" ></i>마이페이지</a></li>
                                                                 <li><a href="/members/logout" sec:authorize="isAuthenticated()"><i class="icofont-logout" ></i>로그아웃</a></li>
                                                                 <li> <a href="/admin/main" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> <i class="icofont-automation" ></i>관리자</a></li>
                                                             </ul>
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <div class="same-style header-cart">
-                                    <a class="cart-active" href="/cart"><i class="icofont-shopping-cart"></i></a>
+                                    <a  href="/cart"><i class="icofont-shopping-cart"></i></a>
                                 </div>
                                 <div class="same-style header-info">
                                     <button class="sidebar-active">
@@ -201,50 +201,7 @@
             </div>
         </div>
         <!-- mini cart start -->
-        <div class="sidebar-cart-active">
-            <div class="sidebar-cart-all">
-                <a class="cart-close" href=""><i class="icofont-close-line"></i></a>
-                <div class="cart-content">
-                    <h3>Shopping Cart</h3>
-                    <ul th:each="cartItem : ${cartItems}">
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}"></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Awesome Mobile</a></h4>
-                                <span th:id="'price_' + ${cartItem.cartItemId}"
-                                      th:data-price="${cartItem.price}"
-                                      th:text="${cartItem.price} + '원'" class="align-self-center mr-2">
-                                </span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img src="/assets/images/cart/cart-2.jpg" alt=""></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Smart Watch</a></h4>
-                                <span> 1 × $49.00	</span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="cart-total">
-                        <h4>Subtotal: <span>$170.00</span></h4>
-                    </div>
-                    <div class="cart-checkout-btn">
-                        <a class="btn-hover cart-btn-style" href="cart.html">view cart</a>
-                        <a class="no-mrg btn-hover cart-btn-style" href="checkout.html">checkout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- Mobile menu start -->
         <div class="mobile-menu-active clickalbe-sidebar-wrapper-style-1">
             <div class="clickalbe-sidebar-wrap">

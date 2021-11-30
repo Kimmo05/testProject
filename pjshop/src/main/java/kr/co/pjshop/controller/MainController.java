@@ -2,6 +2,8 @@ package kr.co.pjshop.controller;
 
 import kr.co.pjshop.dto.ItemSearchDto;
 import kr.co.pjshop.dto.MainItemDto;
+import kr.co.pjshop.dto.MyPageDto;
+import kr.co.pjshop.dto.MyPageOrderStatusDto;
 import kr.co.pjshop.service.ItemService;
 import kr.co.pjshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -52,4 +55,5 @@ public class MainController {
         return "item/itemMain";
 
     }
+
 }

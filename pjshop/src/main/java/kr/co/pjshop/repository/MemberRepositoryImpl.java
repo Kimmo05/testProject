@@ -31,8 +31,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                         QMember.member.id,
                         QMember.member.name,
                         QMember.member.email,
-                        QMember.member.address,
                         QMember.member.role,
+                        QMember.member.address,
                         QMember.member.regTime
                 ))
                 .from(QMember.member)
@@ -57,23 +57,24 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                             QMember.member.id,
                             QMember.member.name,
                             QMember.member.email,
-                            QMember.member.address,
                             QMember.member.role,
+                            QMember.member.address,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
-                    .where(loginIdEq(search.getSearchKeyword()))
+                    .where(emailEq(search.getSearchKeyword()))
                     .orderBy(QMember.member.regTime.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .fetchResults();
         } else if (search.getSearchCondition().equals("username")) {
             results = queryFactory
-                    .select(new QMemberDto( QMember.member.id,
+                    .select(new QMemberDto(
+                            QMember.member.id,
                             QMember.member.name,
                             QMember.member.email,
-                            QMember.member.address,
                             QMember.member.role,
+                            QMember.member.address,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
@@ -90,11 +91,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression loginIdEq(String loginIdCondition) {
-        if (StringUtils.isEmpty(loginIdCondition)) {
+    private BooleanExpression emailEq(String emailCondition) {
+        if (StringUtils.isEmpty(emailCondition)) {
             return null;
         }
-        return QMember.member.email.likeIgnoreCase("%" + loginIdCondition + "%");
+        return QMember.member.email.likeIgnoreCase("%" + emailCondition + "%");
     }
 
     private BooleanExpression nameEq(String nameCondition) {

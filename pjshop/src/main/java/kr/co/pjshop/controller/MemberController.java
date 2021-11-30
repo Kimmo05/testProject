@@ -1,10 +1,7 @@
 package kr.co.pjshop.controller;
 
 
-import kr.co.pjshop.dto.MemberDto;
-import kr.co.pjshop.dto.MemberFormDto;
-import kr.co.pjshop.dto.MemberPageDto;
-import kr.co.pjshop.dto.ProfileDto;
+import kr.co.pjshop.dto.*;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
 import kr.co.pjshop.service.MemberService;
@@ -113,6 +110,16 @@ public class MemberController {
         return "선택된 회원 삭제 완료";
     }
 
+    @GetMapping("/mypage")
+    public String getMyPage(Principal principal, Model model) {
+        String email = principal.getName();
+
+        MyPageDto myPageDto = memberService.showMySimpleInfo(email);
+
+        model.addAttribute("member", myPageDto);
+
+        return "member/membermypage";
+    }
     @PutMapping("/update")
     public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
 

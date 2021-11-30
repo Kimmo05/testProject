@@ -1,6 +1,7 @@
 package kr.co.pjshop.dto;
 
 
+import kr.co.pjshop.constant.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,4 +10,5 @@ import lombok.Setter;
 public class MyPageDto {
     private String name;
     private String email;
+    private Role role;
 }

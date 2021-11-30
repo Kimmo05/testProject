@@ -2,6 +2,7 @@ package kr.co.pjshop.service;
 
 import kr.co.pjshop.dto.MemberDto;
 import kr.co.pjshop.dto.MemberPageDto;
+import kr.co.pjshop.dto.MyPageDto;
 import kr.co.pjshop.dto.ProfileDto;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
@@ -107,5 +108,19 @@ public class MemberService implements UserDetailsService {
 
     }
 
+    public MyPageDto showMySimpleInfo(String email) {
+        MyPageDto myPageDto = new MyPageDto();
+
+        Member findMember = memberRepository.findByEmail(email);
+        if(findMember != null){
+            throw new IllegalStateException("해당하는 회원이 존재하지 않습니다..");
+        }
+
+
+        myPageDto.setName(findMember.getName());
+        myPageDto.setEmail(findMember.getEmail());
+        myPageDto.setRole(findMember.getRole());
+        return myPageDto;
+    }
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+      layout:decorate="~{layouts/mainlayout2}">
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -14,20 +14,66 @@
 
 <div layout:fragment="content">
 
-  <form role="form" method="post" action="/members/login">
-    <div class="form-group">
-      <label th:for="email">이메일주소</label>
-      <input type="email" name="email" class="form-control" placeholder="이메일을 입력해주세요">
+  <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
+    <div class="container">
+      <div class="breadcrumb-content text-center">
+        <h2>Login / Register</h2>
+        <ul>
+          <li>
+            <a href="index.html">Home </a>
+          </li>
+          <li><span> > </span></li>
+          <li>
+            <a href="index.html">Product </a>
+          </li>
+          <li><span> > </span></li>
+          <li class="active"> Login</li>
+        </ul>
+      </div>
     </div>
-    <div class="form-group">
-      <label th:for="password">비밀번호</label>
-      <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호 입력">
+  </div>
+  <div class="login-register-area bg-gray pt-155 pb-160">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+          <div class="login-register-wrapper">
+            <div class="login-register-tab-list nav">
+              <a class="active" data-toggle="tab" href="#lg1">
+                <h4> login </h4>
+              </a>
+            </div>
+            <div class="tab-content">
+              <div id="lg1" class="tab-pane active">
+                <div class="login-form-container">
+                  <div class="login-register-form">
+                    <form  action="/members/login" role="form" method="post">
+                      <label th:for="email">이메일주소</label>
+                      <input type="email" name="email" class="form-control" placeholder="이메일을 입력해주세요">
+                      <label th:for="password">비밀번호</label>
+                      <input type="password" name="password" id="password" class="form-control" placeholder="비밀번호 입력">
+                      <div class="button-box">
+                        <div class="login-toggle-btn">
+                          <input type="checkbox">
+                          <label>Remember me</label>
+                          <a href="#">Forgot Password?</a>
+                        </div>
+                        <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
+                        <button type="submit">Login</button>
+                        <button type="button" class="btn btn-primary" id =a onClick="location.href='/members/new'">회원가입</button>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
-    <button class="btn btn-primary">로그인</button>
-    <button type="button" class="btn btn-primary" onClick="location.href='/members/new'">회원가입</button>
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-  </form>
+  </div>
 
 </div>
 

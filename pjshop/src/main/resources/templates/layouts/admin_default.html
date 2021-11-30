@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <th:block layout:fragment="script"></th:block>
+    <th:block layout:fragment="css"></th:block>
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <title>Admin</title>
+</head>
+<body>
+<div id="wrapper">
+    <th:block th:replace="fragments/admin/sidebar :: sidebar"/>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <th:block th:replace="fragments/admin/admin_top :: admin_top"/>
+            <!--                본문-->
+            <div class="container-fluid">
+                <th:block layout:fragment="content"/>
+            </div>
+        </div>
+        <div th:replace="fragments/admin/admin_footer :: admin_footer"/>
+    </div>
+</div>
+<th:block th:replace="fragments/admin/admin_script :: admin_script"/>
+</body>
+</html>

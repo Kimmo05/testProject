@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_default}">
+<th:block layout:fragment="content">
+    <!--윗줄-->
+    <div class="row">
+        <!-- 최근 가입 회원 -->
+        <div class="col-xl-6 col-lg-4">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">최근 가입 회원</h6>
+                    <a class="text-right text-primary" href="/members/admin/userList">
+                        more +
+                    </a>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>이름</th>
+                                            <th>email</th>
+                                            <th>전화번호</th>
+                                            <th>생성날짜</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="member : ${memberList}">
+                                            <td th:text="${member.id}"></td>
+                                            <td th:text="${member.name}"></td>
+                                            <td th:text="${member.email}"></td>
+                                            <td th:text = "${#strings.replace(member.phoneNumber, ',', '-')}"></td>
+                                            <td th:text="${#temporals.format(member.regTime, 'yyyy-MM-dd')}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 누적 방문자 수 -->
+        <div class="col-xl-6 col-lg-4">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">누적 방문자 수</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <h1 class="font-weight-bold text-center">83명</h1>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!--아랫줄-->
+    <div class="row">
+
+
+        <!--최근 주문-->
+        <div class="col-xl-6 col-lg-4">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">최근 주문</h6>
+                    <a class="text-right text-primary" href="/orders">
+                        more +
+                    </a>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>회원명</th>
+                                    <th>대표상품 이름</th>
+                                    <th>대표상품 주문가격</th>
+                                    <th>대표상품 주문수량</th>
+                                    <th>상태</th>
+                                    <th>일시</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${orders}">
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.member.name}"></td>
+                                    <td th:text="${item.orderItems[0].item.name}"></td>
+                                    <td th:text="${item.orderItems[0].orderPrice}"></td>
+                                    <td th:text="${item.orderItems[0].count}"></td>
+                                    <td th:text="${item.status}"></td>
+                                    <td th:text="${item.orderDate}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--최근 등록 상품-->
+        <div class="col-xl-6 col-lg-4">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">최근 등록 상품</h6>
+                    <a class="text-right text-primary" href="/orders">
+                        more +
+                    </a>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>회원명</th>
+                                    <th>대표상품 이름</th>
+                                    <th>대표상품 주문가격</th>
+                                    <th>대표상품 주문수량</th>
+                                    <th>상태</th>
+                                    <th>일시</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item : ${orders}">
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.member.name}"></td>
+                                    <td th:text="${item.orderItems[0].item.name}"></td>
+                                    <td th:text="${item.orderItems[0].orderPrice}"></td>
+                                    <td th:text="${item.orderItems[0].count}"></td>
+                                    <td th:text="${item.status}"></td>
+                                    <td th:text="${item.orderDate}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>>
+</html>

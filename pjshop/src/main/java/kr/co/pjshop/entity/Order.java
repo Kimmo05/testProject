@@ -1,12 +1,11 @@
 package kr.co.pjshop.entity;
 
-
 import kr.co.pjshop.constant.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class Order extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private  Member member;
 
     private LocalDateTime orderDate; //주문일
 
@@ -32,11 +31,18 @@ public class Order extends BaseEntity {
             , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
+
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
-
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
     public static Order createOrder(Member member, List<OrderItem> orderItemList) {
         Order order = new Order();
         order.setMember(member);
@@ -63,6 +69,7 @@ public class Order extends BaseEntity {
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
+
     }
 
 }

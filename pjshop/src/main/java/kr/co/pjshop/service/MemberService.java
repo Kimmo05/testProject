@@ -107,7 +107,7 @@ public class MemberService implements UserDetailsService {
         findMember.setPassword(passwordEncoder.encode(profileDto.getPassword()));
 
     }
-
+    @Transactional
     public MyPageDto showMySimpleInfo(String email) {
         MyPageDto myPageDto = new MyPageDto();
 
@@ -119,7 +119,7 @@ public class MemberService implements UserDetailsService {
 
         myPageDto.setName(findMember.getName());
         myPageDto.setEmail(findMember.getEmail());
-        myPageDto.setRole(findMember.getRole());
+
         return myPageDto;
     }
 

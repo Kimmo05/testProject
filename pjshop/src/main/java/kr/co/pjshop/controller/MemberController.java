@@ -112,11 +112,11 @@ public class MemberController {
 
     @GetMapping("/mypage")
     public String getMyPage(Principal principal, Model model) {
-//        String email = principal.getName();
-//
-//        MyPageDto myPageDto = memberService.showMySimpleInfo(email);
-//
-//        model.addAttribute("member", myPageDto);
+        String email = principal.getName();
+
+        MyPageDto myPageDto = memberService.showMySimpleInfo(email);
+
+        model.addAttribute("member", myPageDto);
 
         return "member/membermypage";
     }

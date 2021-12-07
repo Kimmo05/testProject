@@ -8,6 +8,7 @@ import kr.co.pjshop.service.MileageServiceImpl;
 import kr.co.pjshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/members")
 @Controller
@@ -115,16 +117,19 @@ public class MemberController {
     }
 
 
-    @GetMapping("/mypage")
-    public String getMyPage(Principal principal, Model model) {
+    @GetMapping(value = {"/mypage","/mypage/{page}"})
+    public String getMyPage(Principal principal, Model model,@PathVariable("page") Optional<Integer> page) {
         String loginId = principal.getName();
-
         MyPageDto myPageDto = memberServiceImpl.showMySimpleInfo(loginId);
 //        MyPageOrderStatusDto myPageOrderStatusDto = orderService.showOrderStatus(loginId);
-
         model.addAttribute("member", myPageDto);
 //        model.addAttribute("orderStatus", myPageOrderStatusDto);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
+        Page<OrderHistDto> ordersHistDtoList = orderService.getOrderList(principal.getName(), pageable);
 
+        model.addAttribute("orders", ordersHistDtoList);
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("maxPage", 5);
         return "member/membermypage";
     }
 

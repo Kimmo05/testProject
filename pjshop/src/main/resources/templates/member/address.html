@@ -4,6 +4,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/mainlayout2}">
 
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
@@ -74,17 +78,66 @@
                                 <div class="tab-content" id="myaccountContent">
                                     <!-- Single Tab Content Start -->
                                     <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Dashboard</h3>
-                                            <div class="welcome">
-                                                <p>Hello, <strong>Alex Tuntuni</strong> (If Not <strong>Tuntuni !</strong><a href="login-register.html" class="logout"> Logout</a>)</p>
-                                                <div>저희 쇼핑몰을 이용해 주셔서 감사합니다. <b th:text="${member.name}">홍길동</b> 님은 <b sec:authorize="hasRole('ROLE_ADMIN')">[관리자]</b><b sec:authorize="hasRole('ROLE_MEMBER')">[일반회원]</b> 이십니다</div>
+                                        <section>
+                                            <div class="section_caption">
+                                                ADDRESS
                                             </div>
-                                            <div class="member_milage">
-                                                가용적립금&nbsp;&nbsp;&nbsp;<b>></b>&nbsp;&nbsp;&nbsp;<b th:text="${#numbers.formatInteger(member.mileage, 0, 'COMMA')} + '원'">2,000원</b>&nbsp;&nbsp;&nbsp;<button onclick="location.href='#'" th:onclick="'location.href=\''+ @{/main/mileage} + '\''">조회</button>
+                                            <div class="section_content">
+                                                <div class="addr_caption">
+                                                    <div class="addr_caption_desc">배송주소록보기</div>
+                                                </div>
+                                                <div class="addrlist">
+                                                    <div class="addrlist_content">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col width="40px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="auto">
+                                                                <col width="76px">
+                                                            </colgroup>
+                                                            <thead>
+                                                            <tr>
+                                                                <td><input type="checkbox" class="check_all"></td>
+                                                                <td>배송지명</td>
+                                                                <td>수령인</td>
+                                                                <td>일반전화</td>
+                                                                <td>휴대전화</td>
+                                                                <td>주소</td>
+                                                                <td>수정</td>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="address : ${addressList}">
+                                                                <td><input type="checkbox" class="check"></td>
+                                                                <td th:text="${address.placeName}">우리집</td>
+                                                                <td th:text="${address.recipient}">김사과</td>
+                                                                <td th:text="${#strings.replace(address.addressHomePhoneNumber, ',', '-')}">02-7777-7777</td>
+                                                                <td th:text="${#strings.replace(address.addressPhoneNumber, ',', '-')}">010-7777-7777</td>
+                                                                <td th:text="${address.zipcode} + ' ' + ${address.city}+ ' ' + ${address.street}">(05502)서울특별시 송파구 올림픽로 135 (잠실동) 리센츠</td>
+                                                                <td>
+                                                                    <button class="editaddrbtn" onclick="location.href=''" th:onclick="'location.href=\''+ @{/main/address/change/{addressIdx}(addressIdx=${address.id})} + '\''"><span>수정</span><i class="fas fa-chevron-right"></i></button>
+                                                                </td>
+                                                                <input type="hidden" class="address_key" value="1" th:value="${address.id}"> <!-- 배송지 index-->
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--검색결과가 있는 경우 없는 영역-->
+                                                        <div th:if="${#lists.isEmpty(addressList)}" class="nosearch">
+                                                            등록된 배송지가 없습니다.
+                                                        </div>
+                                                        <div class="bottombtn_box">
+                                                            <button class="deletebtn bottombtn">선택 주소록 삭제</button>
+                                                            <button class="registerbtn bottombtn" onclick="location.href=''" th:onclick="'location.href=\'' + @{/main/address/register} + '\''">배송지 등록</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
-                                        </div>
+                                        </section>
                                     </div>
                                     <!-- Single Tab Content End -->
                                     <!-- Single Tab Content Start -->

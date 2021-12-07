@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainlayout}">
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        .carousel-inner > .item {
+            height: 350px;
+        }
+        .margin{
+            margin-bottom:30px;
+        }
+        .banner{
+            height: 300px;
+            position: absolute; top:0; left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .card-text{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        a:hover{
+            text-decoration:none;
+        }
+        .center{
+            text-align:center;
+        }
+    </style>
+</th:block>
+
+<div layout:fragment="content">
+
+    <div class="main-wrapper">
+        <div class="error-area height-100vh" style="background-image:url(/assets/images/bg/error.png);">
+            <div class="container-fluid p-0 height-100vh">
+                <div class="row no-gutters align-items-center height-100vh">
+                    <div class="col-lg-12">
+                        <div class="error-content text-center">
+                            <h1>404</h1>
+                            <h3>Page Cannot Be Found!</h3>
+                            <div class="error-btn btn-hover">
+                                <a class="bg-black-hover" href="index.html">Back to home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <h1>OKEA</h1>
+        <p class="lead">회원 기능</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>
+            <a class="btn btn-lg btn-secondary" href="/members/login">로그인</a>
+            <a class="btn btn-lg btn-secondary" href="/admin/main" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">관리자모드</a>
+        </p>
+        <p class="lead">마이페이지, 상품 목록</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/mypage">마이페이지</a>
+            <a class="btn btn-lg btn-dark" href="/itemMain">상품 목록</a>
+        </p>
+        <p class="lead">주문 기능</p>
+        <p>
+            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a>
+        <p class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link" href="/cart">장바구니</a>
+        </p>
+        </p>
+    </div>
+</div>
+</div>
+</html>

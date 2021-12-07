@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class MyPageDto {
     private String name;
-    private String email;
+    private int mileage;
     private Role role;
 }

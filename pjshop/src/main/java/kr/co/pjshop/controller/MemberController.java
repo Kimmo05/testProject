@@ -2,9 +2,10 @@ package kr.co.pjshop.controller;
 
 
 import kr.co.pjshop.dto.*;
-import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
-import kr.co.pjshop.service.MemberService;
+import kr.co.pjshop.service.MemberServiceImpl;
+import kr.co.pjshop.service.MileageServiceImpl;
+import kr.co.pjshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,10 +13,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,38 +24,42 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
+    private final OrderService orderService;
     private final PasswordEncoder passwordEncoder;
+  private final MileageServiceImpl mileageServiceImpl;
 
     @GetMapping(value = "/new")
-    public String memberForm(Model model){
-        model.addAttribute("memberFormDto", new MemberFormDto());
+    public String memberForm(){
+
         return "member/memberForm";
     }
 
     @PostMapping(value = "/new")
-    public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
+    public String newMember(MemberInfoDto memberInfoDto){
 
-        if(bindingResult.hasErrors()){
-            return "member/memberForm";
-        }
+        Long memberId = memberServiceImpl.joinUser(memberInfoDto);
+        mileageServiceImpl.joinUserMileage(memberId);
 
-        try {
-            Member member = Member.createMember(memberFormDto, passwordEncoder);
-            memberService.saveMember(member);
-        } catch (IllegalStateException e){
-            model.addAttribute("errorMessage", e.getMessage());
-            return "member/memberForm";
-        }
 
         return "redirect:/";
     }
 
-    @GetMapping(value = "/login")
-    public String loginMember(){
+
+
+    @GetMapping("/login")
+    public String getLoginPage(HttpServletRequest request, @RequestParam(value = "error", required = false) String error, Model model) {
+        String referer = request.getHeader("Referer");
+
+        if (referer != null) {
+            request.getSession().setAttribute("prevPage", referer);
+        } else {
+            referer = "/";
+            request.getSession().setAttribute("prevPage", referer);
+        }
+        model.addAttribute("error", error);
         return "/member/memberLoginForm";
     }
-
     @GetMapping(value = "/login/error")
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요");
@@ -67,9 +71,9 @@ public class MemberController {
         MemberPageDto memberPageDto = new MemberPageDto();
 
         if (searchMember.getSearchKeyword() == null) {
-            memberPageDto = memberService.findAllMemberByPaging(pageable);
+            memberPageDto = memberServiceImpl.findAllMemberByPaging(pageable);
         } else {
-            memberPageDto = memberService.findAllMemberByConditionByPaging(searchMember, pageable);
+            memberPageDto = memberServiceImpl.findAllMemberByConditionByPaging(searchMember, pageable);
         }
 
         int homeStartPage = memberPageDto.getHomeStartPage();
@@ -86,7 +90,7 @@ public class MemberController {
     }
     @GetMapping("/admin/userList/user/{id}")
     public String pageUser(@PathVariable Long id, Model model) {
-        model.addAttribute("Member", memberService.findMemberById(id));
+        model.addAttribute("Member", memberServiceImpl.findMemberById(id));
 
         return "member/memberpage";
     }
@@ -94,7 +98,7 @@ public class MemberController {
     @ResponseBody
     @DeleteMapping("/admin/userList/{id}")
     public String deleteMember(@PathVariable Long id) {
-        memberService.deleteById(id);
+        memberServiceImpl.deleteById(id);
 
         return "회원 삭제 완료";
     }
@@ -105,27 +109,56 @@ public class MemberController {
         int size = idList.size();
 
         for (int i = 0; i < size; i++) {
-            memberService.deleteById(idList.get(i));
+            memberServiceImpl.deleteById(idList.get(i));
         }
         return "선택된 회원 삭제 완료";
     }
 
+
     @GetMapping("/mypage")
     public String getMyPage(Principal principal, Model model) {
-//        String email = principal.getName();
-//
-//        MyPageDto myPageDto = memberService.showMySimpleInfo(email);
-//
-//        model.addAttribute("member", myPageDto);
+        String loginId = principal.getName();
+
+        MyPageDto myPageDto = memberServiceImpl.showMySimpleInfo(loginId);
+//        MyPageOrderStatusDto myPageOrderStatusDto = orderService.showOrderStatus(loginId);
+
+        model.addAttribute("member", myPageDto);
+//        model.addAttribute("orderStatus", myPageOrderStatusDto);
 
         return "member/membermypage";
     }
+
     @PutMapping("/update")
     public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
 
-        memberService.updateProfile(principal.getName(), profileDto);
+        memberServiceImpl.updateProfile(principal.getName(), profileDto);
 
-        return "redirect:/member/membermypage";
+        return "redirect:/membermypage";
 
+    }
+
+    @GetMapping("/main/restrict")
+    public String getRestrictPage() {
+        return "restrict";
+    }
+
+    @GetMapping("/defaultUrl")
+    public String loginRedirectPage(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+
+        referer = "/";
+        request.getSession().setAttribute("prevPage", referer);
+
+        return "redirect:index";
+    }
+
+    @ResponseBody
+    @PostMapping("/main/register/doublecheck")
+    public String idDoubleCheckPage(@RequestParam(value = "registerId") String registerId) {
+        if (memberServiceImpl.doubleCheckId(registerId)) {
+            return "사용할 수 없는 아이디입니다.";
+        } else {
+            return "사용할 수 있는 아이디입니다.";
+        }
     }
 }

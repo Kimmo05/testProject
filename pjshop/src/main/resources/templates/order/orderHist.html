@@ -157,8 +157,9 @@
                                     </div>
                                 </td>
                                 <td>
+
                                     <div class="ml-3">
-                                        <th:block th:if="${order.orderStatus == T(kr.co.pjshop.constant.OrderStatus).ORDER}">
+                                        <th:block th:if="${order.orderStatus== T(kr.co.pjshop.constant.OrderStatus).ORDER}">
                                             <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}" onclick="cancelOrder(this.value)">CANCLE</button>
                                         </th:block>
                                         <th:block th:unless="${order.orderStatus == T(kr.co.pjshop.constant.OrderStatus).ORDER}">

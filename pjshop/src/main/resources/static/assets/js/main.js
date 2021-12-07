@@ -112,8 +112,8 @@
         slidesToShow: 1,
         dots: true,
         fade: true,
-        autoplay: false,
-        autoplaySpeed: 5000,
+        autoplay: true,
+        autoplaySpeed: 2000,
         customPaging : function(slider, i) {
             var thumb = $(slider.$slides[i]).data('thumb');
             return '<button class="overlay"><img src="'+thumb+'"></button>';
@@ -123,8 +123,8 @@
             breakpoint: 767,
                 settings: {
                     dots: true,
-                    autoplay: false,
-                    autoplaySpeed: 5000,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
                 }
             }
         ]

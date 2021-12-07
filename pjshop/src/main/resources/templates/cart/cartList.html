@@ -222,6 +222,10 @@
         .fs24{
             font-size:24px
         }
+        button.order-btn{
+            --button-bg-color: #d7c8a8;
+            --button-hover-bg-color: #c4b697;
+        }
     </style>
 </th:block>
 
@@ -274,7 +278,7 @@
                             </colgroup>
                             <thead>
                             <tr >
-                                <th> <input type="checkbox" id="checkall" onclick="checkAll()"></th>
+                                <th> <input type="checkbox" id="checkall" onclick="checkAll()" style="width: 25px; height: 25px"></th>
                                 <th>Product</th>
                                 <th class="th-text-center"> Price</th>
                                 <th class="th-text-center">Quantity</th>
@@ -285,7 +289,7 @@
                             <tbody>
                             <tr th:each="cartItem : ${cartItems}">
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
+                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}" style="width: 25px; height: 25px">
                                 </td>
                                 <td class="cart-product">
                                     <div class="product-img-info-wrap">
@@ -328,15 +332,15 @@
                             </tr>
                             </tbody>
                         </table>
-                    <div class="cart-shiping-update-wrapper">
+                    <div class="cart-shiping-update-wrapper proceed-btn ">
                         <a href="#">Continure Shopping</a>
                         <a href="#">Update Cart</a>
-                        <h2 class="text-center">
+                        <h4 class="text-center">
                             총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
-                        </h2>
                         </h4>
-                        <button type="button" class="btn btn-primary btn-lg" onclick="addCart2()">주문하기</button>
-                        <a class="btn btn-lg btn-dark" href="/cart/payment">주문하러 가기</a>
+                        </h4>
+                        <button type="button" class="order-btn" onclick="addCart2()">주문하기</button>
+                        <a class="" href="/cart/payment">주문하러 가기</a>
                     </div>
                     </div>
                 </div>

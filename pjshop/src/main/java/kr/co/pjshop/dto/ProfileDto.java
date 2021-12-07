@@ -10,10 +10,16 @@ import java.time.LocalDateTime;
 @Setter
 public class ProfileDto {
     private Long id;
-    private String name;
+    private String loginId;
     private String password;
+    private String name;
+    private String city;
+    private String street;
+    private String zipcode;
+    private String[] homePhoneNumber;
+    private String[] phoneNumber;
+    private String[] birthday;
     private String email;
     private Role role;
-    private String phoneNumber;
     private LocalDateTime regTime;
 }

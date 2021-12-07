@@ -30,9 +30,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .select(new QMemberDto(
                         QMember.member.id,
                         QMember.member.name,
+                        QMember.member.loginId,
                         QMember.member.email,
                         QMember.member.role,
-                        QMember.member.address,
+                        QMember.member.phoneNumber,
+                        QMember.member.visitCount,
+                        QMember.member.orderCount,
                         QMember.member.regTime
                 ))
                 .from(QMember.member)
@@ -56,13 +59,16 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                     .select(new QMemberDto(
                             QMember.member.id,
                             QMember.member.name,
+                            QMember.member.loginId,
                             QMember.member.email,
                             QMember.member.role,
-                            QMember.member.address,
+                            QMember.member.phoneNumber,
+                            QMember.member.visitCount,
+                            QMember.member.orderCount,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
-                    .where(emailEq(search.getSearchKeyword()))
+                    .where(loginIdEq(search.getSearchKeyword()))
                     .orderBy(QMember.member.regTime.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -72,9 +78,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                     .select(new QMemberDto(
                             QMember.member.id,
                             QMember.member.name,
+                            QMember.member.loginId,
                             QMember.member.email,
                             QMember.member.role,
-                            QMember.member.address,
+                            QMember.member.phoneNumber,
+                            QMember.member.visitCount,
+                            QMember.member.orderCount,
                             QMember.member.regTime
                     ))
                     .from(QMember.member)
@@ -91,13 +100,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression emailEq(String emailCondition) {
-        if (StringUtils.isEmpty(emailCondition)) {
+    private BooleanExpression loginIdEq(String loginIdCondition) {
+        if (StringUtils.isEmpty(loginIdCondition)) {
             return null;
         }
-        return QMember.member.email.likeIgnoreCase("%" + emailCondition + "%");
+        return QMember.member.loginId.likeIgnoreCase("%" + loginIdCondition + "%");
     }
-
     private BooleanExpression nameEq(String nameCondition) {
         if (StringUtils.isEmpty(nameCondition)) {
             return null;

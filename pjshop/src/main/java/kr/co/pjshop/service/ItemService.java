@@ -1,9 +1,6 @@
 package kr.co.pjshop.service;
 
-import kr.co.pjshop.dto.ItemFormDto;
-import kr.co.pjshop.dto.ItemImgDto;
-import kr.co.pjshop.dto.ItemSearchDto;
-import kr.co.pjshop.dto.MainItemDto;
+import kr.co.pjshop.dto.*;
 import kr.co.pjshop.entity.Item;
 import kr.co.pjshop.entity.ItemImg;
 import kr.co.pjshop.repository.ItemImgRepository;
@@ -92,6 +89,35 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    }
+
+    public ItemListToOrderDto itemToOrder(String orderItemInfo) {
+        ItemListToOrderDto itemListToOrderDto = new ItemListToOrderDto();
+
+
+        List<Long> itemList = new ArrayList<>();
+        List<Integer> itemCountList = new ArrayList<>();
+
+
+        itemListToOrderDto.setItemList(itemList);
+        itemListToOrderDto.setItemCountList(itemCountList);
+
+        return itemListToOrderDto;
+    }
+    @Transactional(readOnly = true)
+    public ItemFormDto itemToPayment(Long itemId) {
+        List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
+        List<ItemImgDto> itemImgDtoList = new ArrayList<>();
+        for (ItemImg itemImg : itemImgList) {
+            ItemImgDto itemImgDto = ItemImgDto.of(itemImg);
+            itemImgDtoList.add(itemImgDto);
+        }
+
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(EntityNotFoundException::new);
+        ItemFormDto itemFormDto = ItemFormDto.of(item);
+        itemFormDto.setItemImgDtoList(itemImgDtoList);
+        return itemFormDto;
     }
 
 }

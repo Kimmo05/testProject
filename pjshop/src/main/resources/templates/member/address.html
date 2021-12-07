@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainlayout2}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        .fieldError {
+            color: #bd2130;
+        }
+    </style>
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+
+</th:block>
+
+<div layout:fragment="content">
+
+    <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <h2>My Account</h2>
+                <ul>
+                    <li>
+                        <a href="index.html">Home </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li>
+                        <a href="index.html">Product </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li class="active"> My Account </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- my account wrapper start -->
+    <div class="my-account-wrapper bg-gray pt-160 pb-160">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- My Account Page Start -->
+                    <div class="myaccount-page-wrapper">
+                        <!-- My Account Tab Menu Start -->
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4">
+                                <div class="myaccount-tab-menu nav" role="tablist">
+                                    <a href="#dashboad" class="active" data-toggle="tab">Dashboard</a>
+                                    <a href="#orders" data-toggle="tab"> Orders</a>
+                                    <a href="#download" data-toggle="tab">Download</a>
+                                    <a href="#payment-method" data-toggle="tab"> Payment
+                                        Method</a>
+                                    <a href="#address-edit" data-toggle="tab">address</a>
+                                    <a href="#account-info" data-toggle="tab">Account Details</a>
+                                    <a href="login-register.html">Logout</a>
+                                </div>
+                            </div>
+                            <!-- My Account Tab Menu End -->
+                            <!-- My Account Tab Content Start -->
+                            <div class="col-lg-9 col-md-8">
+                                <div class="tab-content" id="myaccountContent">
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                        <section>
+                                            <div class="section_caption">
+                                                ADDRESS
+                                            </div>
+                                            <div class="section_content">
+                                                <div class="addr_caption">
+                                                    <div class="addr_caption_desc">배송주소록보기</div>
+                                                </div>
+                                                <div class="addrlist">
+                                                    <div class="addrlist_content">
+                                                        <table>
+                                                            <colgroup>
+                                                                <col width="40px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="120px">
+                                                                <col width="auto">
+                                                                <col width="76px">
+                                                            </colgroup>
+                                                            <thead>
+                                                            <tr>
+                                                                <td><input type="checkbox" class="check_all"></td>
+                                                                <td>배송지명</td>
+                                                                <td>수령인</td>
+                                                                <td>일반전화</td>
+                                                                <td>휴대전화</td>
+                                                                <td>주소</td>
+                                                                <td>수정</td>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr th:each="address : ${addressList}">
+                                                                <td><input type="checkbox" class="check"></td>
+                                                                <td th:text="${address.placeName}">우리집</td>
+                                                                <td th:text="${address.recipient}">김사과</td>
+                                                                <td th:text="${#strings.replace(address.addressHomePhoneNumber, ',', '-')}">02-7777-7777</td>
+                                                                <td th:text="${#strings.replace(address.addressPhoneNumber, ',', '-')}">010-7777-7777</td>
+                                                                <td th:text="${address.zipcode} + ' ' + ${address.city}+ ' ' + ${address.street}">(05502)서울특별시 송파구 올림픽로 135 (잠실동) 리센츠</td>
+                                                                <td>
+                                                                    <button class="editaddrbtn" onclick="location.href=''" th:onclick="'location.href=\''+ @{/main/address/change/{addressIdx}(addressIdx=${address.id})} + '\''"><span>수정</span><i class="fas fa-chevron-right"></i></button>
+                                                                </td>
+                                                                <input type="hidden" class="address_key" value="1" th:value="${address.id}"> <!-- 배송지 index-->
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--검색결과가 있는 경우 없는 영역-->
+                                                        <div th:if="${#lists.isEmpty(addressList)}" class="nosearch">
+                                                            등록된 배송지가 없습니다.
+                                                        </div>
+                                                        <div class="bottombtn_box">
+                                                            <button class="deletebtn bottombtn">선택 주소록 삭제</button>
+                                                            <button class="registerbtn bottombtn" onclick="location.href=''" th:onclick="'location.href=\'' + @{/main/address/register} + '\''">배송지 등록</button>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <!-- Single Tab Content End -->
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade" id="orders" role="tabpanel">
+                                        <div class="myaccount-content">
+                                            <h3>Orders</h3>
+                                            <div class="myaccount-table table-responsive text-center">
+                                                <table class="table table-bordered">
+                                                    <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Order</th>
+                                                        <th>Date</th>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Aug 22, 2018</td>
+                                                        <td>Pending</td>
+                                                        <td>$3000</td>
+                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>July 22, 2018</td>
+                                                        <td>Approved</td>
+                                                        <td>$200</td>
+                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>June 12, 2017</td>
+                                                        <td>On Hold</td>
+                                                        <td>$990</td>
+                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Single Tab Content End -->
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade" id="download" role="tabpanel">
+                                        <div class="myaccount-content">
+                                            <h3>Downloads</h3>
+                                            <div class="myaccount-table table-responsive text-center">
+                                                <table class="table table-bordered">
+                                                    <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Date</th>
+                                                        <th>Expire</th>
+                                                        <th>Download</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Haven - Free Real Estate PSD Template</td>
+                                                        <td>Aug 22, 2018</td>
+                                                        <td>Yes</td>
+                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>HasTech - Profolio Business Template</td>
+                                                        <td>Sep 12, 2018</td>
+                                                        <td>Never</td>
+                                                        <td><a href="#" class="check-btn sqr-btn "><i class="fa fa-cloud-download"></i> Download File</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Single Tab Content End -->
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade" id="payment-method" role="tabpanel">
+                                        <div class="myaccount-content">
+                                            <h3>Payment Method</h3>
+                                            <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
+                                            <div class="myshop_orderstate">
+                                                <div class="myshop_orderstate_caption">나의 주문처리 현황 (최근 3개월 기준)</div>
+                                                <div class="myshop_orderstate_container">
+                                                    <div class="myshop_orderstate_item">
+                                                        <div class="item_caption">입금전</div>
+                                                        <div class="item_content"><a th:href="@{/main/order(omode='PAYWAITING',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}" href="" th:text="${orderStatus.payWaitingNum}">0</a></div>
+                                                    </div>
+                                                    <div class="myshop_orderstate_item">
+                                                        <div class="item_caption">배송준비중</div>
+                                                        <div class="item_content"><a th:href="@{/main/order(omode='PRESHIP',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}" href="" th:text="${orderStatus.preShipNum}">0</a></div>
+                                                    </div>
+                                                    <div class="myshop_orderstate_item">
+                                                        <div class="item_caption">배송중</div>
+                                                        <div class="item_content"><a th:href="@{/main/order(omode='INSHIP',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">0</a></div>
+                                                    </div>
+                                                    <div class="myshop_orderstate_item">
+                                                        <div class="item_caption">배송완료</div>
+                                                        <div class="item_content"><a th:href="@{/main/order(omode='COMPLETESHIP',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">0</a></div>
+                                                    </div>
+                                                    <div class="myshop_orderstate_item last_item">
+                                                        <ul>
+                                                            <li>· 취소 &nbsp;:&nbsp;&nbsp; <span><a th:href="@{/main/order(omode='ORDERCANCEL',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}" href="#" th:text="${orderStatus.orderCancelNum}">0</a></span></li>
+                                                            <li>· 교환 &nbsp;:&nbsp;&nbsp; <span><a th:href="@{/main/order(omode='ORDERCHANGE',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">0</a></span></li>
+                                                            <li>· 반품 &nbsp;:&nbsp;&nbsp; <span><a th:href="@{/main/order(omode='ORDERREFUND',firstdate='2020-12-22',lastdate=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}" href="#" th:text="${orderStatus.orderRefundNum}">0</a></span></li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Single Tab Content End -->
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade" id="address-edit" role="tabpanel">
+                                        <div class="myaccount-content">
+                                            <h3>Billing Address</h3>
+                                            <address>
+                                                <p><strong>Alex Tuntuni</strong></p>
+                                                <p>1355 Market St, Suite 900 <br>
+                                                    San Francisco, CA 94103</p>
+                                                <p>Mobile: (123) 456-7890</p>
+                                            </address>
+                                            <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit Address</a>
+                                        </div>
+                                    </div>
+                                    <!-- Single Tab Content End -->
+                                    <!-- Single Tab Content Start -->
+                                    <div class="tab-pane fade" id="account-info" role="tabpanel">
+                                        <div class="myaccount-content">
+                                            <h3>Account Details</h3>
+                                            <div class="account-details-form">
+                                                <form action="#">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="first-name" class="required">First Name</label>
+                                                                <input type="text" id="first-name" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="single-input-item">
+                                                                <label for="last-name" class="required">Last Name</label>
+                                                                <input type="text" id="last-name" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="single-input-item">
+                                                        <label for="display-name" class="required">Display Name</label>
+                                                        <input type="text" id="display-name" />
+                                                    </div>
+                                                    <div class="single-input-item">
+                                                        <label for="email" class="required">Email Addres</label>
+                                                        <input type="email" id="email" />
+                                                    </div>
+                                                    <fieldset>
+                                                        <legend>Password change</legend>
+                                                        <div class="single-input-item">
+                                                            <label for="current-pwd" class="required">Current Password</label>
+                                                            <input type="password" id="current-pwd" />
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="single-input-item">
+                                                                    <label for="new-pwd" class="required">New Password</label>
+                                                                    <input type="password" id="new-pwd" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="single-input-item">
+                                                                    <label for="confirm-pwd" class="required">Confirm Password</label>
+                                                                    <input type="password" id="confirm-pwd" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                    <div class="single-input-item">
+                                                        <button class="check-btn sqr-btn ">Save Changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Single Tab Content End -->
+                                </div>
+                            </div> <!-- My Account Tab Content End -->
+                        </div>
+                    </div> <!-- My Account Page End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

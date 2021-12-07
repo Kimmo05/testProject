@@ -1,126 +1,53 @@
 package kr.co.pjshop.service;
 
-import kr.co.pjshop.dto.MemberDto;
+
+import kr.co.pjshop.dto.MemberInfoDto;
 import kr.co.pjshop.dto.MemberPageDto;
 import kr.co.pjshop.dto.MyPageDto;
 import kr.co.pjshop.dto.ProfileDto;
 import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
-import kr.co.pjshop.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+public interface MemberService {
 
-@Transactional
-@Service
-@RequiredArgsConstructor
-public class MemberService implements UserDetailsService {
+    Member findMemberById(Long id);
+//    Pk를 이용한 회원 찾기
 
-    private final MemberRepository memberRepository;
+    Member findMemberByLoginId(String loginId);
 
-    public Member saveMember(Member member){
-        validateDuplicateMember(member);
-        return memberRepository.save(member);
-    }
+    Long joinUser(MemberInfoDto memberInfoDto);
+//    회원가입 메소드
 
-    private void validateDuplicateMember(Member member){
-        Member findMember = memberRepository.findByEmail(member.getEmail());
-        if(findMember != null){
-            throw new IllegalStateException("이미 가입된 회원입니다.");
-        }
-    }
+    void updateProfile(String loginId, ProfileDto profileDto);
+//    개인 정보 수정 메소드
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    Long changePassword(Long id, String password);
+//    비밀번호 변경 메소드
 
-        Member member = memberRepository.findByEmail(email);
+    MyPageDto showMySimpleInfo(String loginId);
+//    내정보(마일리지, 등급, 이름) 보여주는 메소드
 
-        if(member == null){
-            throw new UsernameNotFoundException(email);
-        }
+    boolean doubleCheckId(String registerId);
+//    회원 중복 체크 메소드
 
-        return User.builder()
-                .username(member.getEmail())
-                .password(member.getPassword())
-                .roles(member.getRole().toString())
-                .build();
-    }
+    void deleteMemberByLoginId(String loginId);
+//    회원 탈퇴 기능 메소드
 
-    @Transactional(readOnly = true)
-    public MemberPageDto findAllMemberByPaging(Pageable pageable) {
-        MemberPageDto memberPageDto = new MemberPageDto();
-        Page<MemberDto> memberBoards = memberRepository.searchAll(pageable);
-        int homeStartPage = Math.max(1, memberBoards.getPageable().getPageNumber());
-        int homeEndPage = Math.min(memberBoards.getTotalPages(), memberBoards.getPageable().getPageNumber() + 5);
+    Long deleteById(Long id);
+//    Pk를 이용한 회원 삭제 기능
 
-        memberPageDto.setMemberBoards(memberBoards);
-        memberPageDto.setHomeStartPage(homeStartPage);
-        memberPageDto.setHomeEndPage(homeEndPage);
+    ProfileDto showProfileData(String loginId);
+//    개인 상세정보 보여주는 메소드
 
-        return memberPageDto;
-    }
+    Page<Member> findAllMemberByOrderByRegTime(Pageable pageable);
+//    등록 순서에 따라 회원 조회하는 메소드
 
-    @Transactional(readOnly = true)
-    public MemberPageDto findAllMemberByConditionByPaging(SearchMember searchMember, Pageable pageable) {
-        MemberPageDto memberPageDto = new MemberPageDto();
-        Page<MemberDto> memberBoards = memberRepository.searchByCondition(searchMember, pageable);
+    MemberPageDto findAllMemberByPaging(Pageable pageable);
 
-        int startPage = Math.max(1, memberBoards.getPageable().getPageNumber() - 2);
-        int endPage = Math.min(memberBoards.getTotalPages(), startPage + 4);
+    MemberPageDto findAllMemberByConditionByPaging(SearchMember searchMember, Pageable pageable);
 
-        memberPageDto.setMemberBoards(memberBoards);
-        memberPageDto.setHomeStartPage(startPage);
-        memberPageDto.setHomeEndPage(endPage);
-
-        return memberPageDto;
-    }
-
-    public Member findMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("해당하는 회원이 존재하지 않습니다")
-        );
-    }
-
-    @Transactional
-    public Long deleteById(Long id) {
-        memberRepository.deleteById(id);
-        return id;
-    }
-    @Transactional
-    public void updateProfile(String email, ProfileDto profileDto) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        Member findMember = memberRepository.findByEmail(email);
-        if(findMember != null){
-            throw new IllegalStateException("이미 가입된 회원입니다.");
-        }
-        findMember.setName(profileDto.getName());
-        findMember.setEmail(profileDto.getEmail());
-        findMember.setPassword(passwordEncoder.encode(profileDto.getPassword()));
-
-    }
-    @Transactional
-    public MyPageDto showMySimpleInfo(String email) {
-        MyPageDto myPageDto = new MyPageDto();
-
-        Member findMember = memberRepository.findByEmail(email);
-        if(findMember != null){
-            throw new IllegalStateException("해당하는 회원이 존재하지 않습니다..");
-        }
-
-
-        myPageDto.setName(findMember.getName());
-        myPageDto.setEmail(findMember.getEmail());
-
-        return myPageDto;
-    }
-
+    int getVisitCount();
+//    전체 방문자 수 구하는 기능
 }

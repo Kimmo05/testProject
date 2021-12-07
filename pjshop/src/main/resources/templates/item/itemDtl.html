@@ -106,7 +106,44 @@
                 }
             });
         }
+        function addCart2(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
+            var url = "/cart";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart/payment';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
     </script>
 </th:block>
 
@@ -147,7 +184,7 @@
                     <div class="col-xl-7 col-lg-12 col-md-12">
                         <div class="pro-details-9-img pro-details-img-zoom">
 
-                                <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}">
+                            <img th:src="${item.itemImgDtoList[0].imgUrl}"  th:alt="${item.itemNm}">
 
                         </div>
                     </div>
@@ -226,10 +263,11 @@
                             </div>
                             <div class="pro-details-action-wrap">
                                 <div class="pro-details-buy-now">
-                                    <a href="#">Buy Now</a>
+                                    <a href="/cart/payment">Buy Now</a>
                                     <div th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
                                         <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart()">장바구니 담기</button>
                                         <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>
+                                        <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">주문하기2</button>
                                     </div>
                                     <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
                                         <button type="button" class="btn btn-danger btn-lg">품절</button>

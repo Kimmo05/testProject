@@ -160,7 +160,40 @@
                 }
             });
         }
+        function addCart2(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
+            var url = "/cart";
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart/payment';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
     </script>
 
 </th:block>
@@ -226,13 +259,12 @@
     </div>
     <div class="cart-area bg-gray pt-160 pb-160">
         <div class="container">
-            <form action="#">
                 <div class="proceed-btn">
                     <a href="#">Proceed to Checkout</a>
                 </div>
                 <div class="cart-table-content">
                     <div class="table-content table-responsive">
-                        <table>
+                        <table >
                             <colgroup>
                                 <col width="10%"/>
                                 <col width="40%"/>
@@ -242,7 +274,7 @@
                             </colgroup>
                             <thead>
                             <tr >
-                                <th><input type="checkbox" id="checkall" onclick="checkAll()"></th>
+                                <th> <input type="checkbox" id="checkall" onclick="checkAll()"></th>
                                 <th>Product</th>
                                 <th class="th-text-center"> Price</th>
                                 <th class="th-text-center">Quantity</th>
@@ -258,6 +290,7 @@
                                 <td class="cart-product">
                                     <div class="product-img-info-wrap">
                                         <div class="product-img">
+
                                             <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
                                         </div>
                                         <div class="product-info">
@@ -281,68 +314,35 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td class="product-total">
+                                    <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
+                                          name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
 
-                                <td class="product-total">  <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
-                                                                  name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
-                    </span></td>
-                                <td class="product-remove"> <button type="button" class="close" aria-label="Close">
+                                </span>
+                                </td>
+                                <td class="product-remove">
+                                    <button type="button" class="close" aria-label="Close">
                                     <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
-                                </button></td>
+                                </button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
-                    </div>
                     <div class="cart-shiping-update-wrapper">
                         <a href="#">Continure Shopping</a>
                         <a href="#">Update Cart</a>
-                        <h4 class="text-center">
+                        <h2 class="text-center">
                             총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
+                        </h2>
                         </h4>
-                        <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="addCart2()">주문하기</button>
+                        <a class="btn btn-lg btn-dark" href="/cart/payment">주문하러 가기</a>
                     </div>
-                </div>
-            </form>
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="discount-code-wrapper discount-tax-wrap">
-                        <h4>Coupon Code </h4>
-                        <div class="discount-code">
-                            <p>Enter your coupon code if you have one!</p>
-                            <form>
-                                <input type="text" required="" placeholder="Enter your code here." name="name">
-                                <button type="submit">Apply Coupon </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="tax-wrapper discount-tax-wrap">
-                        <h4>Get shipping estimatesss</h4>
-                        <div class="discount-code">
-                            <p>Enter your coupon code if you have one!</p>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <select class="nice-select nice-select-style-3 cart-tax-select">
-                                        <option>Select Country </option>
-                                        <option>Bangladesh</option>
-                                        <option>Bahamas</option>
-                                        <option>Bahrain</option>
-                                        <option>Bangladesh</option>
-                                        <option>Barbados</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" required="" placeholder="Zip Code" name="name">
-                                </div>
-                            </div>
-                            <button type="submit">Apply Coupon </button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 </html>

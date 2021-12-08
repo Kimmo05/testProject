@@ -10,6 +10,7 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+    <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
     <script th:inline="javascript">
         $(document).ready(function(){
 
@@ -196,61 +197,23 @@
                             <span th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="badge btn-danger mgb-15" >
                 품절
             </span>
-                            <h2 th:text="${item.itemNm}">Electronic Shop</h2>
-                            <div class="product-ratting-review-wrap">
-                                <div class="product-ratting-digit-wrap">
-                                    <div class="product-ratting">
-                                        <i class="icon-rating"></i>
-                                        <i class="icon-rating"></i>
-                                        <i class="icon-rating"></i>
-                                        <i class="icon-rating"></i>
-                                        <i class="icon-star-empty"></i>
-                                    </div>
-                                    <div class="product-digit">
-                                        <span>4.0</span>
-                                    </div>
-                                </div>
-                                <div class="product-review-order">
-                                    <span>62 Reviews</span>
-                                    <span>242 orders</span>
-                                </div>
-                            </div>
+                            <h1 th:text="${item.itemNm}">Electronic Shop</h1>
+
                             <p class="pro-dec-paragraph-3">Seamlessly predominate enterprise metrics without performance based process improvements.</p>
                             <div class="pro-details-price">
                                 <input type="hidden" th:value="${item.price}" id="price" name="price">
                                 <span th:text="${item.price}"></span>원
                                 <span class="old-price" th:text="${item.price}+2000">US $95.72</span>
                             </div>
-                            <div class="pro-details-color-wrap">
-                                <span>Color:</span>
-                                <div class="pro-details-color-content">
-                                    <ul>
-                                        <li><a class="white" href="#">Black</a></li>
-                                        <li><a class="azalea" href="#">Blue</a></li>
-                                        <li><a class="dolly" href="#">Green</a></li>
-                                        <li><a class="peach-orange" href="#">Orange</a></li>
-                                        <li><a class="mona-lisa active" href="#">Pink</a></li>
-                                        <li><a class="cupid" href="#">gray</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="pro-details-size">
-                                <span>Size:</span>
-                                <div class="pro-details-size-content">
-                                    <ul>
-                                        <li><a href="#">XS</a></li>
-                                        <li><a href="#">S</a></li>
-                                        <li><a href="#">M</a></li>
-                                        <li><a href="#">L</a></li>
-                                        <li><a href="#">XL</a></li>
-                                        <li><a href="#">XXL</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+
                             <div class="pro-details-quality">
                                 <span>Quantity:</span>
-                                <div class="cart-plus-minus">
-                                    <input class="cart-plus-minus-box" type="text"  value="1" name="count" id="count" >
+<!--                                <div class="cart-plus-minus">-->
+<!--                                    <input class="cart-plus-minus-box" type="text"  value="1" name="count" id="count" >-->
+<!--                                </div>-->
+                                <div class="input-group w-50">
+
+                                    <input type="number" name="count" id="count" class="form-control" value="1" min="1">
                                 </div>
                             </div>
                             <div class="product-details-meta">
@@ -266,8 +229,8 @@
                                     <a href="/cart/payment">Buy Now</a>
                                     <div th:if="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
                                         <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart()">장바구니 담기</button>
-                                        <button type="button" class="btn btn-primary btn-lg" onclick="order()">주문하기</button>
-                                        <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">주문하기2</button>
+                                        <button type="button" class="btn btn-light btn-lg border " onclick="order()">주문하기</button>
+                                        <button type="button" class="btn btn-light border border-primary btn-lg" onclick="addCart2()">결제하기</button>
                                     </div>
                                     <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
                                         <button type="button" class="btn btn-danger btn-lg">품절</button>
@@ -275,9 +238,7 @@
 
                                 </div>
                                 <div class="pro-details-action">
-                                    <a title="Add to Cart" href="#"><i class="icon-basket"></i></a>
-                                    <a title="Add to Wishlist" href="#"><i class="icon-heart"></i></a>
-                                    <a class="social" title="Social" href="#"><i class="icon-share"></i></a>
+
                                     <div class="product-dec-social">
                                         <a class="facebook" title="Facebook" href="#"><i class="icon-social-facebook-square"></i></a>
                                         <a class="twitter" title="Twitter" href="#"><i class="icon-social-twitter"></i></a>

@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{layouts/mainlayout2}">
 
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
@@ -14,7 +19,8 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
-
+    <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
+<!--    <script src="/assets/js/mainregister.js"></script>-->
     <script th:inline="javascript">
         function sendit(){
             //alert("sendit호출");
@@ -104,7 +110,7 @@
             $('#double_check').on('click', function(){
                 $.ajax({
                     type: 'POST',
-                    url: 'members/main/register/doublecheck',
+                    url: '/members/main/register/doublecheck',
                     data: {registerId : $('#user_id').val()},
                     beforeSend : function(xhr)
                     {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
@@ -134,7 +140,7 @@
 </th:block>
 
 <div layout:fragment="content">
-
+    <input type="hidden" sec:authorize="isAuthenticated()" value="loginTrue" id="loginTrue">
     <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
         <div class="container">
             <div class="breadcrumb-content text-center">
@@ -166,7 +172,8 @@
                         <div id="lg2" class="tab-pane">
                             <div class="login-form-container">
                                 <div class="login-register-form">
-                                    <form th:action="@{/members/new}" role="form" method="POST" onsubmit="return sendit()">
+                                    <form th:action="@{/members/new}"  method="POST" onsubmit="return sendit()">
+                                        <input type="hidden" id="flag" value="false">
                                         <table class="basicdata">
                                             <colgroup>
                                                 <col width="120px"/>
@@ -176,7 +183,6 @@
                                                 <th><label for="user_id">아이디<span>＊</span></label></th>
                                                 <td>
                                                     <input type="text" name="loginId" id="user_id">
-                                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                                     <button type="button" id="double_check">중복확인 <i class="fas fa-chevron-right"></i></button>
                                                 </td>
                                             </tr>
@@ -253,7 +259,6 @@
 
                                             <button type="submit" class="btn btn-primary" style="">Submit</button>
                                             <button type="button" class="btn btn-primary" id =a onClick="location.href='/members/login'">로그인</button>
-                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                         </div>
                                     </form>
                                 </div>
@@ -266,119 +271,119 @@
     </div>
 </div>
 
-<script th:inline="javascript">
-    function sendit(){
-        //alert("sendit호출");
-        if($('#user_id').val() == ""){
-            alert("아이디는 필수 입력값입니다.");
-            $('#user_id').focus();
-            return false;
-        }
+<!--<script th:inline="javascript">-->
+<!--    function sendit(){-->
+<!--        //alert("sendit호출");-->
+<!--        if($('#user_id').val() == ""){-->
+<!--            alert("아이디는 필수 입력값입니다.");-->
+<!--            $('#user_id').focus();-->
+<!--            return false;-->
+<!--        }-->
 
-        if($('#user_password').val() == ""){
-            alert("비밀번호는 필수 입력값입니다.");
-            $('#user_password').focus();
-            return false;
-        }
-        if($('#user_password_ok').val() == ""){
-            alert("비밀번호확인은 필수 입력값입니다.");
-            $('#user_password_ok').focus();
-            return false;
-        }
-        if($('#user_name').val() == ""){
-            alert("이름은 필수 입력값입니다.");
-            $('#user_name').focus();
-            return false;
-        }
+<!--        if($('#user_password').val() == ""){-->
+<!--            alert("비밀번호는 필수 입력값입니다.");-->
+<!--            $('#user_password').focus();-->
+<!--            return false;-->
+<!--        }-->
+<!--        if($('#user_password_ok').val() == ""){-->
+<!--            alert("비밀번호확인은 필수 입력값입니다.");-->
+<!--            $('#user_password_ok').focus();-->
+<!--            return false;-->
+<!--        }-->
+<!--        if($('#user_name').val() == ""){-->
+<!--            alert("이름은 필수 입력값입니다.");-->
+<!--            $('#user_name').focus();-->
+<!--            return false;-->
+<!--        }-->
 
-        if($('#sample6_postcode').val() == ""){
-            alert("주소 항목은 필수 입력값입니다.");
-            $('#sample6_postcode').focus();
-            return false;
-        }
+<!--        if($('#sample6_postcode').val() == ""){-->
+<!--            alert("주소 항목은 필수 입력값입니다.");-->
+<!--            $('#sample6_postcode').focus();-->
+<!--            return false;-->
+<!--        }-->
 
-        let isempty = false;
-        $('.phone_number').each(function(){
-            if($(this).val() == ""){
-                alert("휴대전화 항목은 필수 입력값입니다.");
-                $(this).focus();
-                isempty = true
-                return false;
-            }
-        })
-        if(isempty){
-            return false;
-        }
+<!--        let isempty = false;-->
+<!--        $('.phone_number').each(function(){-->
+<!--            if($(this).val() == ""){-->
+<!--                alert("휴대전화 항목은 필수 입력값입니다.");-->
+<!--                $(this).focus();-->
+<!--                isempty = true-->
+<!--                return false;-->
+<!--            }-->
+<!--        })-->
+<!--        if(isempty){-->
+<!--            return false;-->
+<!--        }-->
 
-        if($('#email').val() == ""){
-            alert("이메일 항목은 필수 입력값입니다.");
-            $('#email').focus();
-            return false;
-        }
+<!--        if($('#email').val() == ""){-->
+<!--            alert("이메일 항목은 필수 입력값입니다.");-->
+<!--            $('#email').focus();-->
+<!--            return false;-->
+<!--        }-->
 
-        if($('#user_password').val() != $('#user_password_ok').val()){
-            alert("비밀번호 확인의 값이 다릅니다.");
-            $('#user_password_ok').val('');
-            $('#user_password_ok').focus();
-            return false;
-        }
+<!--        if($('#user_password').val() != $('#user_password_ok').val()){-->
+<!--            alert("비밀번호 확인의 값이 다릅니다.");-->
+<!--            $('#user_password_ok').val('');-->
+<!--            $('#user_password_ok').focus();-->
+<!--            return false;-->
+<!--        }-->
 
-        // //정규식
-        // const exppw1 = /^(?=.*[a-zA-Z])(?=.*[0-9]).{10,16}$/; //영문, 숫자
-        // const exppw2 = /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{10,16}$/; //영문, 특수문자
-        // const exppw3 = /^(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{10,16}$/; //특수문자, 숫자
-        // const user_pw = $('#user_password').val();
-        //
-        // if(!(exppw1.test(user_pw) || exppw2.test(user_pw) || exppw3.test(user_pw))){
-        //     alert("비밀번호 입력조건을 다시한번 확인해 주세요.");
-        //     $('#user_password').val('');
-        //     $('#user_password_ok').val('');
-        //     $('#user_password').focus();
-        //     return false
-        // }
-        if($('#flag').val() == 'false'){
-            alert('아이디 중복확인을 해주세요')
-            return false
-        }
+<!--        // //정규식-->
+<!--        // const exppw1 = /^(?=.*[a-zA-Z])(?=.*[0-9]).{10,16}$/; //영문, 숫자-->
+<!--        // const exppw2 = /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{10,16}$/; //영문, 특수문자-->
+<!--        // const exppw3 = /^(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{10,16}$/; //특수문자, 숫자-->
+<!--        // const user_pw = $('#user_password').val();-->
+<!--        //-->
+<!--        // if(!(exppw1.test(user_pw) || exppw2.test(user_pw) || exppw3.test(user_pw))){-->
+<!--        //     alert("비밀번호 입력조건을 다시한번 확인해 주세요.");-->
+<!--        //     $('#user_password').val('');-->
+<!--        //     $('#user_password_ok').val('');-->
+<!--        //     $('#user_password').focus();-->
+<!--        //     return false-->
+<!--        // }-->
+<!--        if($('#flag').val() == 'false'){-->
+<!--            alert('아이디 중복확인을 해주세요')-->
+<!--            return false-->
+<!--        }-->
 
-    }
+<!--    }-->
 
-    $(function(){
-        //로그인 되어있는 경우면 인덱스로 튕겨내기
-        if($('#loginTrue').val() == 'loginTrue'){
-            location.href = '/main/index';
-        }
+<!--    $(function(){-->
+<!--        //로그인 되어있는 경우면 인덱스로 튕겨내기-->
+<!--        if($('#loginTrue').val() == 'loginTrue'){-->
+<!--            location.href = '/main/index';-->
+<!--        }-->
 
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        //아이디 중복확인 ajax
-        $('#double_check').on('click', function(){
-            $.ajax({
-                type: 'POST',
-                url: '/main/register/doublecheck',
-                data: {registerId : $('#user_id').val()},
-                beforeSend : function(xhr)
-                {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
-                    xhr.setRequestHeader(header, token);
-                }
-            }).done(function(word){
-                $('#flag').val('true');
-                alert(word);
-            }).fail(function (error){
-                alert(JSON.stringify(error));
-            })
+<!--        var token = $("meta[name='_csrf']").attr("content");-->
+<!--        var header = $("meta[name='_csrf_header']").attr("content");-->
+<!--        //아이디 중복확인 ajax-->
+<!--        $('#double_check').on('click', function(){-->
+<!--            $.ajax({-->
+<!--                type: 'POST',-->
+<!--                url: '/main/register/doublecheck',-->
+<!--                data: {registerId : $('#user_id').val()},-->
+<!--                beforeSend : function(xhr)-->
+<!--                {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/-->
+<!--                    xhr.setRequestHeader(header, token);-->
+<!--                }-->
+<!--            }).done(function(word){-->
+<!--                $('#flag').val('true');-->
+<!--                alert(word);-->
+<!--            }).fail(function (error){-->
+<!--                alert(JSON.stringify(error));-->
+<!--            })-->
 
-        })
-        $('#user_id').on('change', function(){
-            $('#flag').val('false');
-        })
+<!--        })-->
+<!--        $('#user_id').on('change', function(){-->
+<!--            $('#flag').val('false');-->
+<!--        })-->
 
-    })
-    $(document).ready(function(){
-        var errorMessage = [[${errorMessage}]];
-        if(errorMessage != null){
-            alert(errorMessage);
-        }
-    });
-</script>
+<!--    })-->
+<!--    $(document).ready(function(){-->
+<!--        var errorMessage = [[${errorMessage}]];-->
+<!--        if(errorMessage != null){-->
+<!--            alert(errorMessage);-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 </html>

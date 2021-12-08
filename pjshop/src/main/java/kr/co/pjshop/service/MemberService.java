@@ -20,6 +20,8 @@ public interface MemberService {
     Long joinUser(MemberInfoDto memberInfoDto);
 //    회원가입 메소드
 
+
+
     void updateProfile(String loginId, ProfileDto profileDto);
 //    개인 정보 수정 메소드
 

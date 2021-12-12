@@ -3,7 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/mainlayout}">
-
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
@@ -30,30 +29,62 @@
         .center{
             text-align:center;
         }
+        .mySlides{
+            display: block;
+        }
 
     </style>
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        // 자동 슬라이스쇼
-        var slideIndex = 0;
-        carousel();
 
-        function carousel() {
-            var i;
-            var x = document.getElementsByClassName("slider-active-4");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            slideIndex++;
-            if (slideIndex > x.length) {slideIndex = 1}
-            x[slideIndex-1].style.display = "block";
-            setTimeout(carousel, 2000);
-        }
     </script>
 </th:block>
 
 <div layout:fragment="content">
+
+<!--    <div class="slider-area section-padding-8">-->
+<!--        <div class="container-fluid">-->
+<!--                <div class="single-slider">-->
+<!--                    <div class="row no-gutters align-items-center flex-row-reverse">-->
+<!--                        <div class="col-lg-8 col-md-8 col-12 col-sm-12">-->
+<!--                            <div class="slidebox">-->
+<!--                                <input type="radio" name="slide" id="slide01" checked hidden>-->
+<!--                                <input type="radio" name="slide" id="slide02" hidden>-->
+<!--                                <input type="radio" name="slide" id="slide03" hidden>-->
+<!--                            </div>-->
+<!--                            <ul class="slidelist">-->
+<!--                                <li class="slideitem">-->
+<!--                                    <div class="slider-single-img-6">-->
+<!--                                        <label for="slide02" class="right" hidden></label>-->
+<!--                                        <img class="mySlides" src="/assets/images/img/banner/1015X780(1).jpg" alt="">-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li class="slideitem">-->
+<!--                                    <div class="slider-single-img-6">-->
+<!--                                        <label for="slide03" class="right" hidden></label>-->
+<!--                                        <img class="mySlides" src="/assets/images/img/banner/1015X780(2).jpg" alt="">-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                                <li class="slideitem">-->
+<!--                                    <div class="slider-single-img-6">-->
+<!--                                        <label for="slide01" class="right" hidden></label>-->
+<!--                                        <img class="mySlides" src="/assets/images/img/banner/1015X780(3).jpg" alt="">-->
+<!--                                    </div>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+
+<!--                        </div>-->
+<!--                        <div class="col-lg-4 col-md-4 col-12 col-sm-12">-->
+<!--                            <div class="slider-content-7">-->
+<!--                                <h2 class="animated">Anniversary</h2>-->
+<!--                                <h1 class="animated">Sale 50%</h1>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="slider-area section-padding-8">
         <div class="container-fluid">
@@ -124,28 +155,28 @@
                     <div class="service-wrap text-center mb-30">
                         <img class="inject-me" src="assets/images/icon-img/happiness.svg" alt="">
                         <h3>Happiness </h3>
-                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                        <p class="service-peragraph-2">행복을 주는 가구</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="service-wrap text-center mb-30">
                         <img class="inject-me" src="assets/images/icon-img/shipping-car.svg" alt="">
                         <h3>Free Shipping </h3>
-                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                        <p class="service-peragraph-2">모든 상품 무료 배송</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="service-wrap text-center mb-30">
                         <img class="inject-me" src="assets/images/icon-img/trusty.svg" alt="">
                         <h3>All Trusty Brand </h3>
-                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                        <p class="service-peragraph-2">믿음직한 브랜드</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                     <div class="service-wrap text-center mb-30">
                         <img class="inject-me" src="assets/images/icon-img/support-expart.svg" alt="">
                         <h3>24/7 Support Expert </h3>
-                        <p class="service-peragraph-2">Free Shipping for any product and it's world wide</p>
+                        <p class="service-peragraph-2">24시 상담 가능</p>
                     </div>
                 </div>
             </div>
@@ -159,44 +190,28 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
                     <div class="banner-wrap mb-10 mt-55">
                         <div class="banner-img banner-img-overflow">
-                            <a href="product-details.html"><img src="assets/images/img/4/580X450(1).jpg" alt="" style="width: 580px;height: 450px"></a>
-                        </div>
-                        <div class="banner-content-15" style="text-decoration-color: white">
-                            <h2>Best Sale</h2>
-                            <h3>35% off</h3>
+                            <a><img src="assets/images/img/4/580X450(1).jpg" alt="" ></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
                     <div class="banner-wrap mb-10">
                         <div class="banner-img banner-img-overflow">
-                            <a href="product-details.html"><img src="assets/images/img/4/580X450(2).jpg" alt="" style="width: 580px;height: 450px"></a>
-                        </div>
-                        <div class="banner-content-15">
-                            <h2>Dining Set </h2>
-                            <h3>For Future</h3>
+                            <a><img src="assets/images/img/4/580X450(2).jpg" alt="" ></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
                     <div class="banner-wrap mb-10">
                         <div class="banner-img banner-img-overflow">
-                            <a href="product-details.html"><img src="assets/images/img/4/580X450(4).jpg" alt="" style="width: 580px;height: 450px"></a>
-                        </div>
-                        <div class="banner-content-15" >
-                            <h2>Comfort Sofa</h2>
-                            <h3>Eco Friendly</h3>
+                            <a><img src="assets/images/img/4/580X450(4).jpg" alt="" ></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 grid-item">
                     <div class="banner-wrap mb-10">
                         <div class="banner-img banner-img-overflow">
-                            <a href="product-details.html"><img src="assets/images/img/4/580X450(3).jpg" alt="" style="width: 580px;height: 450px"></a>
-                        </div>
-                        <div class="banner-content-15" >
-                            <h2>Trending </h2>
-                            <h3>Meeting Set</h3>
+                            <a><img src="assets/images/img/4/580X450(3).jpg" alt="" ></a>
                         </div>
                     </div>
                 </div>
@@ -271,25 +286,17 @@
                                 <div class="product-content">
                                     <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
                                     <div class="product-price">
-                                        <span>[[${item.itemDetail}]]</span>
+                                        <span>[[${item.price}]]원</span>
                                         <span class="old-price">[[${item.price}]]원</span>
                                     </div>
                                 </div>
                                 <div class="product-action-position-1 text-center">
                                     <div class="product-content">
-                                        <h4><a href="product-details.html">Product Title</a></h4>
+                                        <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
                                         <div class="product-price">
-                                            <span>$ 124</span>
-                                            <span class="old-price">$ 130</span>
+                                            <span>[[${item.price}]]원</span>
+                                            <span class="old-price">[[${item.price}+2000]]원</span>
                                         </div>
-                                    </div>
-                                    <div class="product-action-wrap">
-                                        <div class="product-action-cart">
-                                            <button title="Add to Cart" onclick="addCart()">Add to cart</button>
-                                        </div>
-                                        <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
-                                        <button title="Add to Compare"><i class="icon-compare"></i></button>
-                                        <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
                                     </div>
                                 </div>
                             </div>

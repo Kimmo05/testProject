@@ -189,6 +189,10 @@
         .fs24{
             font-size:24px
         }
+        .checkBox{
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </th:block>
 
@@ -196,17 +200,17 @@
     <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
         <div class="container">
             <div class="breadcrumb-content">
-                <h2>Cart</h2>
+                <h2>Check Out</h2>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home </a>
                     </li>
                     <li><span> > </span></li>
                     <li>
-                        <a href="index.html">Product </a>
+                        <a href="/itemMain">Product </a>
                     </li>
                     <li><span> > </span></li>
-                    <li class="active"> Cart </li>
+                    <li class="active"> Check Out </li>
                 </ul>
             </div>
         </div>
@@ -216,8 +220,8 @@
             <div class="row">
                 <div class="col-lg-10 ml-auto mr-auto">
                     <div class="cart-check-order-link">
-                        <a  href="cart.html">Shopping Cart</a>
-                        <a class="active" href="checkout.html">Check Out</a>
+                        <a  href="/cart">Shopping Cart</a>
+                        <a class="active" href="/cart/payment">Check Out</a>
                         <a href="/orders">Order Complete</a>
                     </div>
                 </div>
@@ -227,9 +231,6 @@
     <div class="cart-area bg-gray pt-160 pb-160">
         <div class="container">
             <form action="#">
-                <div class="proceed-btn">
-                    <a href="#">Proceed to Checkout</a>
-                </div>
                 <div class="cart-table-content">
                     <div class="table-content table-responsive">
                         <table>
@@ -242,7 +243,7 @@
                             </colgroup>
                             <thead>
                             <tr >
-                                <th><input type="checkbox" id="checkall" onclick="checkAll()" ></th>
+                                <th><input type="checkbox" id="checkall" onclick="checkAll()" class="checkBox" style="margin-left: 40px"></th>
                                 <th>Product</th>
                                 <th class="th-text-center"> Price</th>
                                 <th class="th-text-center">Quantity</th>
@@ -253,7 +254,7 @@
                             <tbody>
                             <tr th:each="cartItem : ${cartItems}">
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
+                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}" class="checkBox">
                                 </td>
                                 <td class="cart-product">
                                     <div class="product-img-info-wrap">
@@ -261,7 +262,7 @@
                                             <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
                                         </div>
                                         <div class="product-info">
-                                            <h4 th:text="${cartItem.itemNm}"><a href="#">Demo Product Title</a></h4>
+                                            <h4 th:text="${cartItem.itemNm}"></h4>
                                         </div>
                                     </div>
                                 </td>
@@ -289,54 +290,16 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="cart-shiping-update-wrapper">
-                        <a href="#">Continure Shopping</a>
-                        <a href="#">Update Cart</a>
-                        <h4 class="text-center">
-                            총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
+                    <div class="cart-shiping-update-wrapper proceed-btn">
+                        <h4 class="font-weight-bold" style="margin-top: 17px">
+                            총 주문 금액 : <span id="orderTotalPrice">0원</span>
                         </h4>
-                        <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+                        &nbsp
+                        <a type="button" class="btn" onclick="orders()">주문하기</a>
                     </div>
                 </div>
             </form>
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="discount-code-wrapper discount-tax-wrap">
-                        <h4>Coupon Code </h4>
-                        <div class="discount-code">
-                            <p>Enter your coupon code if you have one!</p>
-                            <form>
-                                <input type="text" required="" placeholder="Enter your code here." name="name">
-                                <button type="submit">Apply Coupon </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="tax-wrapper discount-tax-wrap">
-                        <h4>Get shipping estimatesss</h4>
-                        <div class="discount-code">
-                            <p>Enter your coupon code if you have one!</p>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <select class="nice-select nice-select-style-3 cart-tax-select">
-                                        <option>Select Country </option>
-                                        <option>Bangladesh</option>
-                                        <option>Bahamas</option>
-                                        <option>Bahrain</option>
-                                        <option>Bangladesh</option>
-                                        <option>Barbados</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" required="" placeholder="Zip Code" name="name">
-                                </div>
-                            </div>
-                            <button type="submit">Apply Coupon </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 

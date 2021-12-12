@@ -93,11 +93,11 @@
                 <h2>Order state</h2>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home </a>
                     </li>
                     <li><span> > </span></li>
                     <li>
-                        <a href="index.html">Product </a>
+                        <a href="/itemMain">Product </a>
                     </li>
                     <li><span> > </span></li>
                     <li class="active"> Order state </li>
@@ -110,8 +110,8 @@
             <div class="row">
                 <div class="col-lg-10 ml-auto mr-auto">
                     <div class="cart-check-order-link">
-                        <a href="cart.html">Shopping Cart</a>
-                        <a href="checkout.html">Check Out</a>
+                        <a href="/cart">Shopping Cart</a>
+                        <a href="/cart/payment">Check Out</a>
                         <a class="active" href="/orders">state</a>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <h3>Thank you. Your order has been received.</h3>
             </div>
             <div class="order-product-details">
-                <form action="#">
+                <div class="cart-table-content">
                     <div class="table-content table-responsive" th:each="order : ${orders.getContent()}">
                         <table>
 
@@ -172,33 +172,34 @@
 
                         </table>
                     </div>
-                </form>
+                </div>
 
+
+                <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
+                    <ul class="pagination justify-content-center" style="margin-top: -100px">
+
+                        <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
+                            <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="btn btn-outline-secondary">
+                                <span aria-hidden='true'><</span>
+                            </a>
+                        </li>
+
+                        <li class="btn-outline-secondary" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
+                            <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="btn btn-outline-secondary">[[${page}]]</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
+                            <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="btn btn-outline-secondary">
+                                <span aria-hidden='true'>></span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
         </div>
-
     </div>
-    <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
-        <ul class="pagination justify-content-center">
 
-            <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true'>Previous</span>
-                </a>
-            </li>
-
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
-                <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
-            </li>
-
-            <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>Next</span>
-                </a>
-            </li>
-
-        </ul>
-    </div>
 
 
 </div>

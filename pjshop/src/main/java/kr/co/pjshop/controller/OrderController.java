@@ -88,7 +88,9 @@ public class OrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
     @GetMapping("/cart/payment")
-    public String getPaymentDataPage(Principal principal, Model model) {
+    public String getPaymentDataPage(ItemSearchDto itemSearchDto, Optional<Integer> page, Principal principal, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);
+        Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
         List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
         model.addAttribute("cartItems", cartDetailList);
         String loginId = principal.getName();
@@ -96,6 +98,8 @@ public class OrderController {
         List<DeliveryAddress> deliveryAddressList = deliveryAddressServiceImpl.getDeliveryAddressByLoginId(loginId);
         model.addAttribute("addressList", deliveryAddressList);
         model.addAttribute("member", myPageDto);
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
 
         return "order/orderCheckout";
     }

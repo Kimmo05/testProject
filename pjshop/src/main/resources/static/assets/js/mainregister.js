@@ -67,10 +67,10 @@ function sendit(){
     //     $('#user_password').focus();
     //     return false
     // }
-    // if($('#flag').val() == 'false'){
-    //     alert('아이디 중복확인을 해주세요')
-    //     return false
-    // }
+    if($('#flag').val() == 'false'){
+        alert('아이디 중복확인을 해주세요')
+        return false
+    }
 
 }
 
@@ -86,7 +86,7 @@ $(function(){
     $('#double_check').on('click', function(){
         $.ajax({
             type: 'POST',
-            url: '/main/register/doublecheck',
+            url: '/members/main/register/doublecheck',
             data: {registerId : $('#user_id').val()},
             beforeSend : function(xhr)
             {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/

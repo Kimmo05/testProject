@@ -37,6 +37,7 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
         );
     }
 
+
     @Override
     public Member findMemberByLoginId(String loginId) {
         return memberRepository.findByloginId(loginId).orElseThrow(
@@ -57,7 +58,6 @@ public class MemberServiceImpl implements UserDetailsService, MemberService {
     public Long joinUser(MemberInfoDto memberInfoDto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberInfoDto.setPassword(passwordEncoder.encode(memberInfoDto.getPassword()));
-
         return memberRepository.save(memberInfoDto.toEntity()).getId();
     }
 

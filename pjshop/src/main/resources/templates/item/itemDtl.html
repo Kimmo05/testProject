@@ -10,6 +10,7 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+    <script src="/assets/js/vendor/jquery-v3.6.0.min.js"></script>
     <script th:inline="javascript">
         $(document).ready(function(){
 
@@ -196,23 +197,30 @@
                             <span th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="badge badge-danger mgb-15" >
                 품절
             </span>
+
                             <h2 th:text="${item.itemNm}">Electronic Shop</h2>
                             <div class="pro-details-price">
                                 <input type="hidden" th:value="${item.price}" id="price" name="price">
                                 <span th:text="${item.price}"></span>원
                                 <span class="old-price" th:text="${item.price}+2000"></span>
+
                             </div>
 
                             <div class="pro-details-quality">
                                 <span>Quantity:</span>
-                                <div class="cart-plus-minus">
-                                    <input class="cart-plus-minus-box" type="text"  value="1" name="count" id="count" >
+<!--                                <div class="cart-plus-minus">-->
+<!--                                    <input class="cart-plus-minus-box" type="text"  value="1" name="count" id="count" >-->
+<!--                                </div>-->
+                                <div class="input-group w-50">
+
+                                    <input type="number" name="count" id="count" class="form-control" value="1" min="1">
                                 </div>
                             </div>
                             &nbsp;
                             <div class="pro-details-action-wrap">
                                 <div class="pro-details-buy-now">
                                     <a href="/cart/payment">Buy Now</a>
+
                                 </div>
                                 <div class="pro-details-action">
                                     <a title="Add to Cart" href="#" onclick="addCart()"><i class="icon-basket"></i></a>
@@ -224,6 +232,7 @@
                                 </div>
                                 <div th:unless="${item.itemSellStatus == T(kr.co.pjshop.constant.ItemSellStatus).SELL}" class="text-right">
                                     <button type="button" class="btn btn-danger btn-lg">품절</button>
+
                                 </div>
                             </div>
                         </div>

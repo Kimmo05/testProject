@@ -22,4 +22,5 @@ public class ProfileDto {
     private String email;
     private Role role;
     private LocalDateTime regTime;
+    private int mileage;
 }

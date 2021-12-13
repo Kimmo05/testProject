@@ -2,12 +2,14 @@ package kr.co.pjshop.controller;
 
 
 import kr.co.pjshop.dto.*;
+import kr.co.pjshop.entity.Member;
 import kr.co.pjshop.entity.SearchMember;
 import kr.co.pjshop.service.MemberServiceImpl;
 import kr.co.pjshop.service.MileageServiceImpl;
 import kr.co.pjshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/members")
 @Controller
@@ -114,28 +117,26 @@ public class MemberController {
         return "선택된 회원 삭제 완료";
     }
 
-
-    @GetMapping("/mypage")
-    public String getMyPage(Principal principal, Model model) {
+    @GetMapping(value = {"/mypage", "/mypage/{page}"})
+    public String getMyPage(Principal principal, Model model,@PathVariable("page") Optional<Integer> page,
+                            @ModelAttribute("member") Member member) {
         String loginId = principal.getName();
 
         MyPageDto myPageDto = memberServiceImpl.showMySimpleInfo(loginId);
 //        MyPageOrderStatusDto myPageOrderStatusDto = orderService.showOrderStatus(loginId);
+        ProfileDto myProfileDto = memberServiceImpl.showProfileData(loginId); //내정보 수정 부분
 
         model.addAttribute("member", myPageDto);
 //        model.addAttribute("orderStatus", myPageOrderStatusDto);
-
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
+        Page<OrderHistDto> ordersHistDtoList = orderService.getOrderList(principal.getName(), pageable);
+        model.addAttribute("member", myProfileDto);
+        model.addAttribute("orders", ordersHistDtoList);
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("maxPage", 5);
         return "member/membermypage";
     }
 
-    @PutMapping("/update")
-    public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
-
-        memberServiceImpl.updateProfile(principal.getName(), profileDto);
-
-        return "redirect:/membermypage";
-
-    }
 
     @GetMapping("/main/restrict")
     public String getRestrictPage() {
@@ -160,5 +161,15 @@ public class MemberController {
         } else {
             return "사용할 수 있는 아이디입니다.";
         }
+    }
+
+
+
+    @PutMapping("/update")
+    public String editDataPage(Principal principal, @ModelAttribute("member") ProfileDto profileDto) {
+
+        memberServiceImpl.updateProfile(principal.getName(), profileDto);
+
+        return "redirect:/mypage";
     }
 }

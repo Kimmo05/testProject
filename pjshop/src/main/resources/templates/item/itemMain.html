@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/mainlayout2}">
 
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
@@ -21,9 +25,251 @@
             var searchQuery = $("#searchQuery").val();
 
             location.href="/admin/items/" + page + "?searchDateType=" + searchDateType
-            + "&searchSellStatus=" + searchSellStatus
-            + "&searchBy=" + searchBy
-            + "&searchQuery=" + searchQuery;
+                + "&searchSellStatus=" + searchSellStatus
+                + "&searchBy=" + searchBy
+                + "&searchQuery=" + searchQuery;
+        }
+        $(document).ready(function(){
+            $("input[name=cartChkBox]").change( function(){
+                getOrderTotalPrice();
+            });
+        });
+
+        function getOrderTotalPrice(){
+            var orderTotalPrice = 0;
+            $("input[name=cartChkBox]:checked").each(function() {
+                var cartItemId = $(this).val();
+                var price = $("#price_" + cartItemId).attr("data-price");
+                var count = $("#count_" + cartItemId).val();
+                orderTotalPrice += price*count;
+            });
+
+            $("#orderTotalPrice").html(orderTotalPrice+'원');
+        }
+
+        function changeCount(obj){
+            var count = obj.value;
+            var cartItemId = obj.id.split('_')[1];
+            var price = $("#price_" + cartItemId).data("price");
+            var totalPrice = count*price;
+            $("#totalPrice_" + cartItemId).html(totalPrice+"원");
+            getOrderTotalPrice();
+            updateCartItemCount(cartItemId, count);
+        }
+
+        function checkAll(){
+            if($("#checkall").prop("checked")){
+                $("input[name=cartChkBox]").prop("checked",true);
+            }else{
+                $("input[name=cartChkBox]").prop("checked",false);
+            }
+            getOrderTotalPrice();
+        }
+
+        function updateCartItemCount(cartItemId, count){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cartItem/" + cartItemId+"?count=" + count;
+
+            $.ajax({
+                url      : url,
+                type     : "PATCH",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    console.log("cartItem count update success");
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+
+        function deleteCartItem(obj){
+            var cartItemId = obj.dataset.id;
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cartItem/" + cartItemId;
+
+            $.ajax({
+                url      : url,
+                type     : "DELETE",
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+
+        function orders(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cart/orders";
+
+            var dataList = new Array();
+            var paramData = new Object();
+
+            $("input[name=cartChkBox]:checked").each(function() {
+                var cartItemId = $(this).val();
+                var data = new Object();
+                data["cartItemId"] = cartItemId;
+                dataList.push(data);
+            });
+
+            paramData['cartOrderDtoList'] = dataList;
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("주문이 완료 되었습니다.");
+                    location.href='/orders';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        }
+        $(document).ready(function(){
+
+            calculateToalPrice();
+
+            $("#count").change( function(){
+                calculateToalPrice();
+            });
+        });
+
+        function calculateToalPrice(){
+            var count = $("#count").val();
+            var price = $("#price").val();
+            var totalPrice = price*count;
+            $("#totalPrice").html(totalPrice + '원');
+        }
+
+        function order(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/order";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("주문이 완료 되었습니다.");
+                    location.href='/';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
+
+        function addCart(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var url = "/cart";
+            var paramData = {
+                itemId : $("#itemId").val(),
+                count : $("#count").val()
+            };
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("상품을 장바구니에 담았습니다.");
+                    location.href='/';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
         }
 
     </script>
@@ -39,50 +285,200 @@
 </th:block>
 
 <div layout:fragment="content">
-
-    <input type="hidden" name="searchQuery" th:value="${itemSearchDto.searchQuery}">
-    <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
-        <p class="h3 font-weight-bold" th:text="${itemSearchDto.searchQuery} + '검색 결과'"></p>
+    <div class="breadcrumb-area breadcrumb-mt bg-gray breadcrumb-ptb-1">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <h2>Fashion Shop</h2>
+                <p class="left">Seamlessly predominate enterprise metrics without performance based process improvements.</p>
+            </div>
+        </div>
+        <div class="breadcrumb-img-2">
+            <img src="/assets/images/about/breadcrumb-3.png" alt="">
+        </div>
     </div>
-
-    <div class="row">
-        <th:block th:each="item, status: ${items.getContent()}">
-            <div class="col-md-4 margin">
-                <div class="card">
-                    <a th:href="'/item/' +${item.id}" class="text-dark">
-                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
-                        <div class="card-body">
-                            <h4 class="card-title">[[${item.itemNm}]]</h4>
-                            <p class="card-text">[[${item.itemDetail}]]</p>
-                            <h3 class="card-title text-danger">[[${item.price}]]원</h3>
+    <div class="shop-area breadcrumb-mt section-padding-12 pt-25 pb-160">
+        <div class="container-fluid">
+            <div class="row flex-row-reverse">
+                <div class="col-xl-10 col-lg-9">
+                    <div class="shop-wrap-5">
+                        <div class="shop-top-bar">
+                            <div class="shop-top-bar-left">
+                                <div class="shop-tab nav">
+                                    <a href="#shop-1" class="active" data-toggle="tab"><img class="inject-me" src="/assets/images/icon-img/shop-grid.svg" alt=""></a>
+                                    <a href="#shop-2" data-toggle="tab"><img class="inject-me" src="/assets/images/icon-img/shop-list.svg" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="shop-top-bar-right">
+                                <div class="shop-page-list">
+                                    <ul>
+                                        <li>Show</li>
+                                        <li class="active"><a href="#">2</a></li>
+                                        <li><a href="#">4</a></li>
+                                        <li><a href="#">6</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </a>
+                        <div class="tab-content pt-30">
+                            <div id="shop-1" class="tab-pane active">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="product-wrap mb-50">
+                                            <div class="product-img product-img-zoom mb-25">
+                                                <a href="product-details.html">
+                                                    <img src="/assets/images/product/product-95.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="product-content">
+                                                <h4><a href="product-details.html">Modern Light</a></h4>
+                                                <div class="product-price">
+                                                    <span>$ 124</span>
+                                                    <span class="old-price">$ 130</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-action-position-1 text-center">
+                                                <div class="product-content">
+                                                    <h4><a href="product-details.html">Modern Light</a></h4>
+                                                    <div class="product-price">
+                                                        <span>$ 124</span>
+                                                        <span class="old-price">$ 130</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action-cart">
+                                                        <button title="Add to Cart">Add to cart</button>
+                                                    </div>
+                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12" th:each="item, status: ${items.getContent()}">
+                                        <div class="product-wrap mb-50">
+                                            <div class="product-img product-img-zoom mb-25">
+                                                <a th:href="'/item/' +${item.id}">
+                                                    <img  th:src="${item.imgUrl}"  alt="" th:alt="${item.itemNm}">
+                                                </a>
+                                            </div>
+                                            <div class="product-content">
+                                                <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
+                                                <div class="product-price">
+                                                    <span>[[${item.itemDetail}]]</span>
+                                                    <span class="old-price">[[${item.price}]]원</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-action-position-1 text-center">
+                                                <div class="product-content">
+                                                    <h4><a href="product-details.html">[[${item.itemNm}]]</a></h4>
+                                                    <div class="product-price">
+                                                        <span>[[${item.itemDetail}]]</span>
+                                                        <span class="old-price">[[${item.price}]]원</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-action-wrap">
+                                                    <div class="product-action-cart">
+                                                        <button title="Add to Cart" onclick="addCart()">Add to cart</button>
+                                                    </div>
+                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div id="shop-2" class="tab-pane ">
+                                <div class="shop-list-wrap mb-50">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="product-list-img">
+                                                <a href="product-details.html">
+                                                    <img src="/assets/images/product/product-138.jpg" alt="">
+                                                </a>
+                                                <div class="shop-list-quickview">
+                                                    <button data-toggle="modal" data-target="#exampleModal"><i class="icon-zoom"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <div class="shop-list-content ml-20">
+                                                <h3><a href="#">Product Title Here</a></h3>
+                                                <div class="pro-list-price">
+                                                    <span>$50.00</span>
+                                                    <span class="old-price">$50.00</span>
+                                                </div>
+                                                <p>Composition: 50% cotton,45% polyester, 5% polyamide. Filling: 100% polyester. Hood fur: 64% acrylic,23% modacrylic,13% polyester</p>
+                                                <div class="product-list-action">
+                                                    <button title="Add to Compare"><i class="icon-compare"></i></button>
+                                                    <div class="product-action-cart">
+                                                        <button title="Add to Cart">Add to cart</button>
+                                                    </div>
+                                                    <button title="Add to Wishlist"><i class="icon-heart-empty"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="pro-pagination-style text-center mt-50">
+                                <ul>
+                                    <li><a class="active" href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#"><i class="icofont-long-arrow-right"></i></a></li>
+                                </ul>
+                            </div>
+                            <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
+                                <ul class="pagination justify-content-center" >
+
+                                    <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
+                                        <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="page-link">
+                                            <span aria-hidden='true'>Previous</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
+                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
+                                    </li>
+
+                                    <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
+                                        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
+                                            <span aria-hidden='true'>Next</span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3">
+                    <div class="shop-sidebar-style">
+                        <div class="sidebar-widget">
+                            <h4 class="pro-sidebar-title">Categories</h4>
+                            <div class="sidebar-widget-categori mt-45">
+                                <ul>
+                                    <li><a class="active" href="#">All</a> </li>
+                                    <li><a href="#">Clothing</a> </li>
+                                    <li><a href="#">Shoes</a> </li>
+                                    <li><a href="#">Watches</a> </li>
+                                    <li><a href="#">Jewelry</a> </li>
+                                    <li><a href="#">Accessories</a> </li>
+                                    <li><a href="#"> Big & Tall </a> </li>
+                                    <li><a href="#">Contemporary</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </th:block>
-    </div>
-
-    <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-        <ul class="pagination justify-content-center">
-
-            <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
-                <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true'>Previous</span>
-                </a>
-            </li>
-
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
-            </li>
-
-            <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>Next</span>
-                </a>
-            </li>
-
-        </ul>
-    </div>
+        </div>
+    </div>>
 
 </div>
 

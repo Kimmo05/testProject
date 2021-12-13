@@ -160,7 +160,40 @@
                 }
             });
         }
+        function addCart2(){
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
+            var url = "/cart";
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    location.href='/cart/payment';
+                },
+                error : function(jqXHR, status, error){
+
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
+                    }
+
+                }
+            });
+        }
     </script>
 
 </th:block>
@@ -168,12 +201,12 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        .content-mg{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:2%;
-            margin-bottom:100px;
-        }
+        /*.content-mg{*/
+        /*    margin-left:25%;*/
+        /*    margin-right:25%;*/
+        /*    margin-top:2%;*/
+        /*    margin-bottom:100px;*/
+        /*}*/
         .repImgDiv{
             margin-right:15px;
             margin-left:15px;
@@ -189,78 +222,126 @@
         .fs24{
             font-size:24px
         }
+        button.order-btn{
+            --button-bg-color: #d7c8a8;
+            --button-hover-bg-color: #c4b697;
+        }
+        .checkBox{
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </th:block>
 
 <div layout:fragment="content" class="content-mg">
-
-    <h2 class="mb-4">
-        장바구니 목록
-    </h2>
-
-    <div>
-
-        <table class="table">
-            <colgroup>
-                <col width="15%"/>
-                <col width="70%"/>
-                <col width="15%"/>
-            </colgroup>
-            <thead>
-            <tr class="text-center">
-                <td>
-                    <input type="checkbox" id="checkall" onclick="checkAll()"> 전체선택
-                </td>
-                <td>상품정보</td>
-                <td>상품금액</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cartItem : ${cartItems}">
-                <td class="text-center align-middle">
-                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
-                </td>
-                <td class="d-flex">
-                    <div class="repImgDiv align-self-center">
-                        <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
+    <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <h2>Cart</h2>
+                <ul>
+                    <li>
+                        <a href="/">Home </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li>
+                        <a href="/itemMain">Product </a>
+                    </li>
+                    <li><span> > </span></li>
+                    <li class="active"> Cart </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="cart-check-order-link-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 ml-auto mr-auto">
+                    <div class="cart-check-order-link">
+                        <a class="active" href="/cart">Shopping Cart</a>
+                        <a href="/cart/payment">Check Out</a>
+                        <a href="/orders">Order Complete</a>
                     </div>
-                    <div class="align-self-center">
-                        <span th:text="${cartItem.itemNm}" class="fs24 font-weight-bold"></span>
-                        <div class="fs18 font-weight-light">
-                            <span class="input-group mt-2">
-                                <span th:id="'price_' + ${cartItem.cartItemId}"
-                                      th:data-price="${cartItem.price}"
-                                      th:text="${cartItem.price} + '원'" class="align-self-center mr-2">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area bg-gray pt-160 pb-160">
+        <div class="container">
+                <div class="cart-table-content">
+                    <div class="table-content table-responsive">
+                        <table >
+                            <colgroup>
+                                <col width="10%"/>
+                                <col width="40%"/>
+                                <col width="20%"/>
+                                <col width="10%"/>
+                                <col width="15%"/>
+                            </colgroup>
+                            <thead>
+                            <tr >
+                                <th><input type="checkbox" id="checkall" onclick="checkAll()" class="checkBox" style="margin-left: 40px"></th>
+                                <th>Product</th>
+                                <th class="th-text-center"> Price</th>
+                                <th class="th-text-center">Quantity</th>
+                                <th class="th-text-center">Total Prce</th>
+                                <th class="th-text-center">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cartItem : ${cartItems}">
+                                <td class="text-center align-middle">
+                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}" class="checkBox">
+                                </td>
+                                <td class="cart-product">
+                                    <div class="product-img-info-wrap">
+                                        <div class="product-img">
+
+                                            <img th:src="${cartItem.imgUrl}" class = "rounded repImg" th:alt="${cartItem.itemNm}">
+                                        </div>
+                                        <div class="product-info">
+                                            <h4 th:text="${cartItem.itemNm}"><a href="#">Demo Product Title</a></h4>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="product-price">
+                                     <span th:id="'price_' + ${cartItem.cartItemId}"
+                                           th:data-price="${cartItem.price}"
+                                           th:text="${cartItem.price} + '원'" class="amount">
+                                </span></td>
+                                <td class="cart-quality">
+                                    <div class="pro-details-quality">
+                                        <div >
+                                            <input type="number" name="count" th:id="'count_' + ${cartItem.cartItemId}"
+                                                   th:value="${cartItem.count}" min="1"
+                                                   onchange="changeCount(this)" class="form-control mr-2" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="product-total">
+                                    <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
+                                          name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
+
                                 </span>
-                                <input type="number" name="count" th:id="'count_' + ${cartItem.cartItemId}"
-                                       th:value="${cartItem.count}" min="1"
-                                       onchange="changeCount(this)" class="form-control mr-2" >
-                                <button type="button" class="close" aria-label="Close">
+                                </td>
+                                <td class="product-remove">
+                                    <button type="button" class="close" aria-label="Close">
                                     <span aria-hidden="true" th:data-id="${cartItem.cartItemId}" onclick="deleteCartItem(this)">&times;</span>
                                 </button>
-                            </span>
-                        </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    <div class="cart-shiping-update-wrapper proceed-btn">
+                        <h4 class="font-weight-bold" style="margin-top: 17px">
+                            총 주문 금액 : <span id="orderTotalPrice">0원</span>
+                        </h4>
+                        &nbsp
+                        <a href="/cart/payment" class="btn">주문하러가기</a>
                     </div>
-                </td>
-                <td class="text-center align-middle">
-                    <span th:id="'totalPrice_' + ${cartItem.cartItemId}"
-                          name="totalPrice" th:text="${cartItem.price * cartItem.count} + '원'">
-                    </span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <h2 class="text-center">
-            총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
-        </h2>
-
-        <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
 
 </html>

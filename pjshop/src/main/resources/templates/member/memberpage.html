@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_default}">
+
+<th:block layout:fragment="content">
+<div class="container">
+    <div class="card shadow mb-4">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="bg-light">No.</td>
+                                       <td th:text="${Member.id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-light">이름</td>
+                                        <td th:text="${Member.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-light">Email</td>
+                                        <td th:text="${Member.email}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bg-light">생성날짜</td>
+                                        <td th:text="${#temporals.format(Member.regTime, 'yyyy-MM-dd')}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class=" pagination justify-content-center">
+                                <input class="btn btn-primary" type="button" value="뒤로가기" onclick="history.back()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+</th:block>
+</html>

@@ -4,7 +4,11 @@ package kr.co.pjshop.controller;
 import kr.co.pjshop.dto.CartDetailDto;
 import kr.co.pjshop.dto.CartItemDto;
 import kr.co.pjshop.dto.CartOrderDto;
+import kr.co.pjshop.dto.MyPageDto;
+import kr.co.pjshop.entity.DeliveryAddress;
 import kr.co.pjshop.service.CartService;
+import kr.co.pjshop.service.DeliveryAddressServiceImpl;
+import kr.co.pjshop.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +28,8 @@ import java.util.List;
 public class CartController {
 
     private final CartService cartService;
-
+    private final MemberServiceImpl memberServiceImpl;
+    private final DeliveryAddressServiceImpl deliveryAddressServiceImpl;
     @PostMapping(value = "/cart")
     public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto, BindingResult bindingResult, Principal principal){
 
@@ -39,11 +44,11 @@ public class CartController {
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        String email = principal.getName();
+        String loginId = principal.getName();
         Long cartItemId;
 
         try {
-            cartItemId = cartService.addCart(cartItemDto, email);
+            cartItemId = cartService.addCart(cartItemDto, loginId);
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -101,5 +106,6 @@ public class CartController {
         Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
+
 
 }

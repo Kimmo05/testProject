@@ -1,6 +1,7 @@
 package kr.co.pjshop.config;
 
-import kr.co.pjshop.service.MemberService;
+import kr.co.pjshop.service.MemberServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,27 +12,36 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final AuthenticationFailureHandler customFailureHandler;
 
-    @Autowired
-    MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/members/login")
                 .defaultSuccessUrl("/")
-                .usernameParameter("email")
-                .failureUrl("/members/login/error")
+                .usernameParameter("loginId")
+                .successHandler(successHandler())
+                .failureHandler(customFailureHandler)
+//                .failureUrl("/members/login/error")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .and()
+                // 403 예외처리 핸들링
+                .exceptionHandling().accessDeniedPage("/main/restrict");
         ;
 
         http.authorizeRequests()
@@ -46,6 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
+    private AuthenticationSuccessHandler successHandler() {
+        return new CustomLoginSuccessHandler("/defaultUrl");
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -53,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService)
+        auth.userDetailsService(memberServiceImpl)
                 .passwordEncoder(passwordEncoder());
     }
 

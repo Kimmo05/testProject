@@ -109,8 +109,14 @@
                                     <tr>
                                         <th>#</th>
                                         <th>이름</th>
+<<<<<<< HEAD
                                         <th>email</th>
                                         <th>주소</th>
+=======
+                                        <th>아이디</th>
+                                        <th>email</th>
+                                        <th>전화번호</th>
+>>>>>>> b656f342a72da11c3ac1f088e551a93307594a21
                                         <th>생성날짜</th>
                                         <th></th>
                                     </tr>
@@ -120,7 +126,13 @@
                                     <tr th:each="user : ${memberList}">
                                         <td th:text="${user.id}"></td>
                                         <td th:text="${user.name}"></td>
+<<<<<<< HEAD
                                         <td th:text="${user.email}"></td>
+=======
+                                        <td th:text="${user.loginId}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:text = "${#strings.replace(user.phoneNumber, ',', '-')}"></td>
+>>>>>>> b656f342a72da11c3ac1f088e551a93307594a21
                                         <td th:text="${#temporals.format(user.regTime, 'yyyy-MM-dd')}"></td>
                                         <td>
                                             <input type="button" value="보기" class="btn btn-primary" th:onclick="|openUserDetail('${user.id}')|">

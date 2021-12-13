@@ -144,7 +144,7 @@
     <div class="breadcrumb-area breadcrumb-mt breadcrumb-ptb-2">
         <div class="container">
             <div class="breadcrumb-content text-center">
-                <h2>Login / Register</h2>
+                <h2><a onClick="location.href='/members/login'">Login</a> / <a onClick="location.href='/members/new'">Register</a></h2>
                 <ul>
                     <li>
                         <a href="/">Home </a>
@@ -176,32 +176,34 @@
                                         <input type="hidden" id="flag" value="false">
                                         <table class="basicdata">
                                             <colgroup>
-                                                <col width="120px"/>
                                                 <col width="auto"/>
                                             </colgroup>
                                             <tr>
-                                                <th><label for="user_id">아이디<span>＊</span></label></th>
-                                                <td>
-                                                    <input type="text" name="loginId" id="user_id">
-                                                    <button type="button" id="double_check">중복확인 <i class="fas fa-chevron-right"></i></button>
-                                                </td>
+
+                                                <label for="user_id" class="font-weight-bold">아이디<span>＊</span></label>
+                                                <input type="text" name="loginId" id="user_id">
+                                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                                <div class="button-box">
+                                                    <button type="button" id="double_check" class="btn" style="margin-top: -30px">중복확인 </button>
+                                                </div>
                                             </tr>
                                             <tr>
-                                                <th><label for="user_password">비밀번호<span>＊</span></label></th>
-                                                <td><input type="password" name="password" id="user_password">&nbsp; (영문 대소문자/숫자/특수문자 중2가지 이상 조합, 10~16자)</td>
+                                                <label for="user_password" class="font-weight-bold">비밀번호<span>＊</span></label>
+                                                (영문 대소문자/숫자/특수문자 중2가지 이상 조합, 10~16자)
+                                                <input type="password" name="password" id="user_password">
                                             </tr>
                                             <tr>
-                                                <th><label for="user_password_ok">비밀번호확인<span>＊</span></label></th>
-                                                <td><input type="password" id="user_password_ok"></td>
+                                                <label for="user_password_ok" class="font-weight-bold">비밀번호확인<span>＊</span></label>
+                                                <input type="password" id="user_password_ok">
                                             </tr>
                                             <tr>
-                                                <th><label for="user_name">이름<span>＊</span></label></th>
-                                                <td><input type="text" name="name" id="user_name"></td>
+                                                <label for="user_name" class="font-weight-bold">이름<span>＊</span></label>
+                                                <input type="text" name="name" id="user_name">
                                             </tr>
                                             <tr>
-                                                <th><label for="home_number">일반전화</label></th>
-                                                <td>
-                                                    <select name="homePhoneNumber[]" id="home_number" class="home_number">
+                                                <label for="home_number" class="font-weight-bold">일반전화</label>
+                                                <div>
+                                                    <select name="homePhoneNumber[]" id="home_number" class="home_number" style="width: 31%">
                                                         <option value="02">02</option>
                                                         <option value="02">031</option>
                                                         <option value="02">032</option>
@@ -217,15 +219,15 @@
                                                         <option value="02">055</option>
                                                     </select>
                                                     -
-                                                    <input type="text" name="homePhoneNumber[]" class="home_number">
+                                                    <input type="text" name="homePhoneNumber[]" class="home_number" style="width: 31%">
                                                     -
-                                                    <input type="text" name="homePhoneNumber[]" class="home_number">
-                                                </td>
+                                                    <input type="text" name="homePhoneNumber[]" class="home_number" style="width: 31%">
+                                                </div>
                                             </tr>
                                             <tr>
-                                                <th><label for="phone_number">휴대전화<span>＊</span></label></th>
-                                                <td>
-                                                    <select name="phoneNumber[]" id="phone_number" class="phone_number">
+                                                <label for="phone_number" class="font-weight-bold">휴대전화<span>＊</span></label>
+                                                <div>
+                                                    <select name="phoneNumber[]" id="phone_number" class="phone_number" style="width: 31%">
                                                         <option value="02">010</option>
                                                         <option value="02">011</option>
                                                         <option value="02">016</option>
@@ -234,31 +236,31 @@
                                                         <option value="02">019</option>
                                                     </select>
                                                     -
-                                                    <input type="text" name="phoneNumber[]" class="phone_number">
+                                                    <input type="text" name="phoneNumber[]" class="phone_number" style="width: 31%">
                                                     -
-                                                    <input type="text" name="phoneNumber[]" class="phone_number">
-                                                </td>
+                                                    <input type="text" name="phoneNumber[]" class="phone_number" style="width: 31%">
+                                                </div>
                                             </tr>
                                             <tr>
-                                                <th><label for="email">이메일<span>＊</span></label></th>
-                                                <td><input type="text" name="email" id="email"></td>
+                                                <label for="email" class="font-weight-bold">이메일<span>＊</span></label>
+                                                <input type="text" name="email" id="email">
                                             </tr>
                                             <tr>
-                                                <th><label for="birth_year">생년월일</label></th>
-                                                <td>
-                                                    <input type="text" name="birthday[]" id="birth_year">
-                                                    년&nbsp;&nbsp;&nbsp;
-                                                    <input type="text" name="birthday[]" id="birth_month">
-                                                    월&nbsp;&nbsp;&nbsp;
-                                                    <input type="text" name="birthday[]" id="birth_date">
-                                                    일
-                                                </td>
+                                                <label for="birth_year" class="font-weight-bold">생년월일</label>
+                                                <div>
+                                                    <input type="text" name="birthday[]" id="birth_year" placeholder="년" style="width: 31%">
+                                                    /
+                                                    <input type="text" name="birthday[]" id="birth_month" placeholder="월" style="width: 31%">
+                                                    /
+                                                    <input type="text" name="birthday[]" id="birth_date" placeholder="일" style="width: 31%">
+                                                </div>
                                             </tr>
                                         </table>
-                                        <div class="button-box">
 
-                                            <button type="submit" class="btn btn-primary" style="">Submit</button>
-                                            <button type="button" class="btn btn-primary" id =a onClick="location.href='/members/login'">로그인</button>
+                                        <div class="button-box justify-content-center align-content-center -align-center text-center">
+                                            <button type="submit" class="btn" style="">REGISTER</button>
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
                                         </div>
                                     </form>
                                 </div>

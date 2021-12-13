@@ -222,6 +222,14 @@
         .fs24{
             font-size:24px
         }
+        button.order-btn{
+            --button-bg-color: #d7c8a8;
+            --button-hover-bg-color: #c4b697;
+        }
+        .checkBox{
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </th:block>
 
@@ -232,11 +240,11 @@
                 <h2>Cart</h2>
                 <ul>
                     <li>
-                        <a href="index.html">Home </a>
+                        <a href="/">Home </a>
                     </li>
                     <li><span> > </span></li>
                     <li>
-                        <a href="index.html">Product </a>
+                        <a href="/itemMain">Product </a>
                     </li>
                     <li><span> > </span></li>
                     <li class="active"> Cart </li>
@@ -249,8 +257,8 @@
             <div class="row">
                 <div class="col-lg-10 ml-auto mr-auto">
                     <div class="cart-check-order-link">
-                        <a class="active" href="cart.html">Shopping Cart</a>
-                        <a href="checkout.html">Check Out</a>
+                        <a class="active" href="/cart">Shopping Cart</a>
+                        <a href="/cart/payment">Check Out</a>
                         <a href="/orders">Order Complete</a>
                     </div>
                 </div>
@@ -259,9 +267,6 @@
     </div>
     <div class="cart-area bg-gray pt-160 pb-160">
         <div class="container">
-                <div class="proceed-btn">
-                    <a href="#">Proceed to Checkout</a>
-                </div>
                 <div class="cart-table-content">
                     <div class="table-content table-responsive">
                         <table >
@@ -274,7 +279,7 @@
                             </colgroup>
                             <thead>
                             <tr >
-                                <th> <input type="checkbox" id="checkall" onclick="checkAll()"></th>
+                                <th><input type="checkbox" id="checkall" onclick="checkAll()" class="checkBox" style="margin-left: 40px"></th>
                                 <th>Product</th>
                                 <th class="th-text-center"> Price</th>
                                 <th class="th-text-center">Quantity</th>
@@ -285,7 +290,7 @@
                             <tbody>
                             <tr th:each="cartItem : ${cartItems}">
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
+                                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}" class="checkBox">
                                 </td>
                                 <td class="cart-product">
                                     <div class="product-img-info-wrap">
@@ -295,8 +300,6 @@
                                         </div>
                                         <div class="product-info">
                                             <h4 th:text="${cartItem.itemNm}"><a href="#">Demo Product Title</a></h4>
-                                            <span>Color :  Black</span>
-                                            <span>Size :     SL</span>
                                         </div>
                                     </div>
                                 </td>
@@ -328,16 +331,12 @@
                             </tr>
                             </tbody>
                         </table>
-                    <div class="cart-shiping-update-wrapper">
-                        <a href="#">Continure Shopping</a>
-                        <a href="#">Update Cart</a>
-                        <h2 class="text-center">
-                            총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
-                        </h2>
+                    <div class="cart-shiping-update-wrapper proceed-btn">
+                        <h4 class="font-weight-bold" style="margin-top: 17px">
+                            총 주문 금액 : <span id="orderTotalPrice">0원</span>
                         </h4>
-                        <button type="button" class="btn btn-primary btn-lg" onclick="addCart2()">주문하기</button>
-                        <a class="btn btn-lg btn-dark" href="/cart/payment">주문하러 가기</a>
-                    </div>
+                        &nbsp
+                        <a href="/cart/payment" class="btn">주문하러가기</a>
                     </div>
                 </div>
             </div>
